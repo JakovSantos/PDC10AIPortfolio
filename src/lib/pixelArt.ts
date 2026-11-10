@@ -74,14 +74,14 @@ export const PALETTES: Record<Exclude<Variant, 'cave'>, Pal> = {
   },
 }
 
-type Ctx = CanvasRenderingContext2D
+export type Ctx = CanvasRenderingContext2D
 
-function px(ctx: Ctx, x: number, y: number, c: string, w = 1, h = 1) {
+export function px(ctx: Ctx, x: number, y: number, c: string, w = 1, h = 1) {
   ctx.fillStyle = c
   ctx.fillRect(Math.round(x), Math.round(y), w, h)
 }
 
-function disc(ctx: Ctx, cx: number, cy: number, r: number, c: string) {
+export function disc(ctx: Ctx, cx: number, cy: number, r: number, c: string) {
   ctx.fillStyle = c
   for (let dy = -r; dy <= r; dy++) {
     const half = Math.floor(Math.sqrt(r * r - dy * dy) + 0.35)

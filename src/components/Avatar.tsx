@@ -29,8 +29,8 @@ const STILL: Record<Exclude<Pose, 'walk'>, string> = {
   thinking: 'thinking',
   chin: 'chin',
   adventure: 'adventure',
-  cheer: 'victory',
-  victory: 'cheer',
+  cheer: 'victory', // both celebration poses use the arms-up victory sprite
+  victory: 'victory',
   back: 'back',
 }
 
@@ -41,7 +41,7 @@ const WALK: Record<Facing, string[]> = {
   down: ['walk2', 'idle'],
 }
 
-const ALL = ['idle', 'happy', 'curious', 'thinking', 'chin', 'adventure', 'walk1', 'walk2', 'victory', 'cheer', 'back', 'back1', 'back2']
+const ALL = ['idle', 'happy', 'curious', 'thinking', 'chin', 'adventure', 'walk1', 'walk2', 'victory', 'back', 'back1', 'back2']
 
 const src = (name: string) => `${import.meta.env.BASE_URL}sprites/${name}.png`
 
@@ -118,27 +118,16 @@ export default function Avatar({
 }
 
 /*
-  Head position measured in each 228x332 sprite (centre of the hair, top of the hair).
-  The portrait shows a 150x150 square starting 8px above the hair, so the whole face fits.
+  Profile photo: always the idle sprite. Its head was measured in the 228x332 canvas
+  (hair centre x = 114, hair top y = 12); the portrait shows a 150x150 square starting
+  8px above the hair, so the full face (hair to chin) fits.
 */
-const HEAD: Record<string, { cx: number; top: number }> = {
-  idle: { cx: 114, top: 12 },
-  happy: { cx: 114, top: 12 },
-  curious: { cx: 134, top: 13 },
-  thinking: { cx: 116, top: 12 },
-  chin: { cx: 108, top: 12 },
-  adventure: { cx: 120, top: 15 },
-  walk1: { cx: 117, top: 18 },
-  victory: { cx: 116, top: 23 },
-  cheer: { cx: 115, top: 3 },
-  back: { cx: 113, top: 4 },
-}
+const PORTRAIT = { name: 'idle', cx: 114, top: 12 }
 const CROP = 150
 
-/** A head-and-shoulders portrait cropped around the full face. */
-export function AvatarPortrait({ size = 40, pose = 'happy' }: { size?: number; pose?: Pose }) {
-  const name = pose === 'walk' ? 'walk1' : STILL[pose]
-  const head = HEAD[name] ?? HEAD.idle
+/** Head-and-shoulders profile photo from the idle sprite. `pose` is accepted for compatibility but ignored. */
+export function AvatarPortrait({ size = 40 }: { size?: number; pose?: Pose }) {
+  const { name, ...head } = PORTRAIT
   const k = size / CROP
   return (
     <span

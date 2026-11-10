@@ -1,10 +1,11 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Avatar, { type Pose } from './Avatar'
-import Scene from './Scene'
+import PixelCanvas from './PixelCanvas'
 import { quests, titleScreen } from '../data/portfolio'
 import { useGame, type Route } from '../lib/game'
 import { playSfx } from '../lib/sound'
+import { TITLE, drawTitleScene } from '../lib/titleScene'
 
 interface Item {
   label: string
@@ -12,20 +13,72 @@ interface Item {
   action: () => void
 }
 
+/** Drifting fireflies / dust motes for atmosphere. */
+function Fireflies({ count = 18 }: { count?: number }) {
+  const flies = useMemo(
+    () =>
+      Array.from({ length: count }, (_, i) => ({
+        left: (i * 53) % 100,
+        top: 30 + ((i * 37) % 62),
+        size: i % 3 === 0 ? 4 : 3,
+        dur: 5 + (i % 5) * 1.3,
+        delay: -((i * 0.9) % 6),
+      })),
+    [count],
+  )
+  return (
+    <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+      {flies.map((f, i) => (
+        <span
+          key={i}
+          className="firefly absolute"
+          style={{
+            left: `${f.left}%`,
+            top: `${f.top}%`,
+            width: f.size,
+            height: f.size,
+            animationDuration: `${f.dur}s`,
+            animationDelay: `${f.delay}s`,
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
+function useViewport() {
+  const [vp, setVp] = useState(() => ({ w: window.innerWidth, h: window.innerHeight }))
+  useEffect(() => {
+    const on = () => setVp({ w: window.innerWidth, h: window.innerHeight })
+    on() // re-measure after mount in case the size changed before the listener existed
+    window.addEventListener('resize', on)
+    window.visualViewport?.addEventListener('resize', on)
+    return () => {
+      window.removeEventListener('resize', on)
+      window.visualViewport?.removeEventListener('resize', on)
+    }
+  }, [])
+  return vp
+}
+
 export default function TitleScreen() {
   const { go, visited, completed, level, sound, toggleSound, resetProgress } = useGame()
   const reduce = useReducedMotion()
+  const { w, h } = useViewport()
   const [started, setStarted] = useState(false)
   const [cursor, setCursor] = useState(0)
-  const [pose, setPose] = useState<Pose>('adventure')
+  const [pose, setPose] = useState<Pose>('back')
   const startBtn = useRef<HTMLButtonElement>(null)
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([])
   const hasSave = visited.length > 0
 
+  const narrow = w < 768
+  const avatarH = Math.round(Math.min(narrow ? h * 0.19 : h * 0.44, narrow ? 160 : 360))
+
   const travel = (r: Route) => {
     playSfx('open')
-    setPose('cheer')
-    window.setTimeout(() => go(r), reduce ? 0 : 450)
+    setPose('victory')
+    window.setTimeout(() => go(r), reduce ? 0 : 500)
   }
 
   const items: Item[] = [
@@ -58,10 +111,7 @@ export default function TitleScreen() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (!started) {
-        if (e.key === 'Enter' || e.key === ' ') return // the focused button handles it
-        return
-      }
+      if (!started) return
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault()
         playSfx('step')
@@ -71,7 +121,10 @@ export default function TitleScreen() {
           return n
         })
       }
-      if (e.key === 'Escape') setStarted(false)
+      if (e.key === 'Escape') {
+        setStarted(false)
+        setPose('back')
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -84,98 +137,112 @@ export default function TitleScreen() {
   }
 
   return (
-    <main className="relative min-h-[100svh]">
-      <Scene variant="day" path birds seed={6} hills={0.5} grass={0.64} className="absolute inset-0" />
+    <main className="relative h-[100svh] min-h-[560px] overflow-hidden bg-[#8dbcc8]">
+      {/* painted valley + castle */}
+      <div className="absolute inset-0">
+        <PixelCanvas draw={(ctx, cw, ch) => drawTitleScene(ctx, cw, ch, 5)} />
+      </div>
+      <Fireflies />
+      {/* mood: soft dark edges and a darker left side behind the menu */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        aria-hidden="true"
+        style={{
+          background:
+            'linear-gradient(90deg, rgba(20,32,38,0.55) 0%, rgba(20,32,38,0.25) 34%, rgba(20,32,38,0) 55%), radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(16,26,32,0.45) 100%)',
+        }}
+      />
 
-      <div className="relative z-10 flex min-h-[100svh] flex-col items-center px-4 pb-6 pt-8 sm:pt-12">
-        {/* Logo */}
-        <motion.div
-          initial={{ y: -40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 110, damping: 12 }}
-          className="text-center"
-        >
-          <p className="font-pixel text-lg font-semibold text-cream small-outline sm:text-xl">~ A PDC10 Adventure ~</p>
-          <h1 className="mt-1 font-pixel font-bold leading-none">
-            <span className="block whitespace-nowrap text-6xl text-gold title-outline sm:text-7xl md:text-8xl">{titleScreen.title}</span>
-          </h1>
-          <div className="frame-sm f-wood drop mx-auto mt-3 inline-block px-4 py-1">
-            <span className="font-pixel text-lg font-semibold text-ink sm:text-2xl">{titleScreen.subtitleLine}</span>
-          </div>
-        </motion.div>
-
-        {/* Hero on the path */}
-        <div className="relative mt-auto flex w-full max-w-4xl items-end justify-center">
+      {/* Jakov on the ledge (right side) */}
+      <div
+        className="absolute z-10"
+        style={{ right: narrow ? '4%' : '9%', bottom: `${(1 - TITLE.ledgeTop) * 100}%`, marginBottom: -avatarH * 0.01 }}
+      >
+        <div className="relative">
           <Avatar
             pose={pose}
-            size={typeof window !== 'undefined' && window.innerWidth < 640 ? 170 : 230}
+            size={avatarH}
             label="Jakov's avatar: glasses, black middle-part hair, light blue polo, red lanyard with ID, black pants"
           />
-          {!started && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.6 }}
-              className="frame-sm f-paper drop absolute bottom-[52%] left-[calc(50%+70px)] z-10 hidden w-max max-w-[220px] px-3 py-2 sm:block"
-            >
-              <p className="bubble-text">Hi! I'm Jakov. Ready for a quest?</p>
-            </motion.div>
-          )}
-        </div>
-
-        {/* Start or menu */}
-        <div className="mt-4 w-full max-w-md">
-          <AnimatePresence mode="wait">
-            {!started ? (
-              <motion.div key="start" exit={{ opacity: 0, scale: 0.9 }} className="flex flex-col items-center gap-3">
-                <button ref={startBtn} type="button" onClick={start} className="pixel-btn-gold px-8 py-3 text-2xl sm:text-3xl">
-                  <span className="blink-text">▶ PRESS START</span>
-                </button>
-                <p className="frame-sm f-paper px-3 py-1 text-center text-xs sm:text-sm">{titleScreen.tagline}</p>
-              </motion.div>
-            ) : (
+          <AnimatePresence>
+            {started && !narrow && (
               <motion.div
-                key="menu"
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                className="pixel-box px-3 py-2"
+                initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ delay: 0.25 }}
+                className="frame-sm f-paper drop absolute right-[75%] top-[2%] w-max max-w-[200px] px-2 py-1"
               >
-                <nav aria-label="Title menu">
-                  <ul>
-                    {items.map((it, i) => (
-                      <li key={it.label}>
-                        <button
-                          ref={(el) => (itemRefs.current[i] = el)}
-                          type="button"
-                          onClick={() => {
-                            playSfx('click')
-                            it.action()
-                          }}
-                          onFocus={() => setCursor(i)}
-                          onMouseEnter={() => setCursor(i)}
-                          className="flex w-full items-center gap-2 px-2 py-1 text-left font-pixel text-xl font-semibold focus:outline-none sm:text-2xl"
-                        >
-                          <span className={`w-5 text-lanyard ${cursor === i ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true">
-                            ▶
-                          </span>
-                          <span className={cursor === i ? 'text-lanyard' : ''}>{it.label}</span>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
-                {/* Fixed two-line height so hovering items never resizes the menu (prevents hover jitter) */}
-                <p
-                  className="mt-1 h-[3.25rem] overflow-hidden border-t-2 border-dashed border-ink/30 px-2 pt-2 text-sm leading-5 text-inksoft"
-                  aria-live="polite"
-                >
-                  {items[cursor]?.hint}
-                </p>
-                <p className="px-2 pb-1 text-xs text-inksoft">↑ ↓ to choose · Enter to select · Esc to go back</p>
+                <p className="bubble-text">Hi! I'm Jakov. Ready for a quest?</p>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
+      </div>
+
+      {/* Logo + menu (left side) */}
+      <div className="relative z-20 flex h-full max-w-xl flex-col px-5 pb-5 pt-[7vh] sm:px-10 md:pl-[6vw]">
+        <motion.div initial={{ y: -30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: 'spring', stiffness: 110, damping: 14 }}>
+          <p className="font-pixel text-lg text-[#e9f1ee] title-shadow-sm sm:text-xl">~ A PDC10 Adventure ~</p>
+          <h1 className="logo-text font-pixel leading-[0.85]">
+            <span className="block text-6xl sm:text-8xl lg:text-9xl">Prompt</span>
+            <span className="block text-6xl sm:text-8xl lg:text-9xl">Quest</span>
+          </h1>
+          <p className="mt-3 font-pixel text-2xl text-gold title-shadow-sm sm:text-3xl">{titleScreen.subtitleLine}</p>
+        </motion.div>
+
+        <div className="mt-[6vh] sm:mt-[8vh]">
+          <AnimatePresence mode="wait">
+            {!started ? (
+              <motion.div key="start" exit={{ opacity: 0, x: -20 }}>
+                <button ref={startBtn} type="button" onClick={start} className="menu-item text-4xl sm:text-5xl">
+                  <span className="blink-text">▶ Press Start</span>
+                </button>
+              </motion.div>
+            ) : (
+              <motion.nav
+                key="menu"
+                aria-label="Title menu"
+                initial={{ opacity: 0, x: -24 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ type: 'spring', stiffness: 160, damping: 18 }}
+              >
+                <ul className="space-y-1">
+                  {items.map((it, i) => (
+                    <li key={it.label}>
+                      <button
+                        ref={(el) => (itemRefs.current[i] = el)}
+                        type="button"
+                        onClick={() => {
+                          playSfx('click')
+                          it.action()
+                        }}
+                        onFocus={() => setCursor(i)}
+                        onMouseEnter={() => setCursor(i)}
+                        aria-current={cursor === i ? 'true' : undefined}
+                        className={`menu-item flex items-center gap-2 text-2xl focus:outline-none sm:gap-3 sm:text-4xl ${cursor === i ? 'is-active' : ''}`}
+                      >
+                        <span className={`w-6 text-gold ${cursor === i ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true">
+                          ▶
+                        </span>
+                        <span className="transition-transform duration-150" style={{ transform: cursor === i ? 'translateX(6px)' : 'none' }}>
+                          {it.label}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                {/* fixed height so hovering never resizes the menu (prevents jitter) */}
+                <p className="mt-3 h-[2.75rem] max-w-[60%] overflow-hidden pl-9 sm:max-w-sm text-sm leading-5 text-[#e9f1ee] title-shadow-sm" aria-live="polite">
+                  {items[cursor]?.hint}
+                </p>
+                <p className="hidden pl-9 text-xs text-[#d6e2df] title-shadow-sm [@media(min-height:720px)]:block">↑ ↓ choose · Enter select · Esc back</p>
+              </motion.nav>
+            )}
+          </AnimatePresence>
+        </div>
+
+        <p className="mt-auto max-w-[60%] text-xs text-[#e9f1ee] title-shadow-sm sm:max-w-none sm:text-sm">{titleScreen.tagline}</p>
       </div>
     </main>
   )
