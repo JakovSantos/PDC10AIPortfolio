@@ -1,7 +1,7 @@
 import { AvatarPortrait } from './Avatar'
 import { useGame } from '../lib/game'
 import { playSfx } from '../lib/sound'
-import { quests } from '../data/portfolio'
+import { quests, titleScreen } from '../data/portfolio'
 
 // Top bar: portrait, navigation, Prompting Level with an XP gauge, and the sound toggle (off by default).
 export default function Hud() {
@@ -26,12 +26,12 @@ export default function Hud() {
           type="button"
           onClick={() => nav({ screen: 'title' })}
           className="flex items-center gap-2"
-          aria-label="Prompt Quest: back to title screen"
+          aria-label="The Legend of Prompt: back to title screen"
         >
           <span className="frame-sm f-blue">
             <AvatarPortrait size={30} />
           </span>
-          <span className="hidden font-pixel text-xl font-bold text-gold small-outline sm:inline">Prompt Quest</span>
+          <span className="hidden font-pixel text-xl font-bold text-gold small-outline sm:inline">{titleScreen.title}</span>
         </button>
 
         <nav aria-label="Main" className="flex gap-1">

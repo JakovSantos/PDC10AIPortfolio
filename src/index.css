@@ -101,45 +101,31 @@ body {
       2px 2px 0 #3a2717, -2px 2px 0 #3a2717, 2px -2px 0 #3a2717, -2px -2px 0 #3a2717;
   }
 
-  /* ---------- title screen (moody main menu) ---------- */
-  /* Chunky two-tone logo: cream top, cool grey bottom, thick dark outline, drop shadow */
+  /* ---------- title screen (site palette: gold, cream, warm brown outline) ---------- */
+  /* Chunky two-tone gold logo with a thick brown outline and drop shadow */
   .logo-text {
-    background: linear-gradient(180deg, #fffaf0 0%, #fffaf0 56%, #cfd8dc 56%, #b9c6cc 100%);
+    background: linear-gradient(180deg, #ffe7a1 0%, #ffe7a1 50%, #f2b632 50%, #e09a1e 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    filter: drop-shadow(4px 0 0 #142026) drop-shadow(-4px 0 0 #142026) drop-shadow(0 4px 0 #142026)
-      drop-shadow(0 -4px 0 #142026) drop-shadow(5px 7px 0 rgba(10, 18, 22, 0.55));
+    filter: drop-shadow(4px 0 0 #3a2717) drop-shadow(-4px 0 0 #3a2717) drop-shadow(0 4px 0 #3a2717)
+      drop-shadow(0 -4px 0 #3a2717) drop-shadow(5px 7px 0 rgba(58, 39, 23, 0.45));
   }
   .title-shadow-sm {
     text-shadow:
-      2px 0 0 #142026, -2px 0 0 #142026, 0 2px 0 #142026, 0 -2px 0 #142026,
-      2px 2px 0 #142026, -2px -2px 0 #142026, 2px -2px 0 #142026, -2px 2px 0 #142026;
+      2px 0 0 #3a2717, -2px 0 0 #3a2717, 0 2px 0 #3a2717, 0 -2px 0 #3a2717,
+      2px 2px 0 #3a2717, -2px -2px 0 #3a2717, 2px -2px 0 #3a2717, -2px 2px 0 #3a2717;
   }
   .menu-item {
-    @apply font-pixel leading-tight text-[#f4f6f2];
+    @apply font-pixel leading-tight text-cream;
     text-shadow:
-      3px 0 0 #142026, -3px 0 0 #142026, 0 3px 0 #142026, 0 -3px 0 #142026,
-      3px 3px 0 #142026, -3px -3px 0 #142026, 3px -3px 0 #142026, -3px 3px 0 #142026,
-      4px 5px 0 rgba(10, 18, 22, 0.5);
+      3px 0 0 #3a2717, -3px 0 0 #3a2717, 0 3px 0 #3a2717, 0 -3px 0 #3a2717,
+      3px 3px 0 #3a2717, -3px -3px 0 #3a2717, 3px -3px 0 #3a2717, -3px 3px 0 #3a2717,
+      4px 5px 0 rgba(58, 39, 23, 0.4);
   }
   .menu-item.is-active {
     color: #f2b632;
   }
-}
-
-@keyframes firefly {
-  0%, 100% { transform: translate(0, 0); opacity: 0.2; }
-  25% { opacity: 1; }
-  50% { transform: translate(10px, -16px); opacity: 0.7; }
-  75% { opacity: 1; }
-}
-.firefly {
-  background: #f8f3a6;
-  box-shadow: 0 0 6px 2px rgba(248, 243, 166, 0.65);
-  animation-name: firefly;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
 }
 
 @keyframes press-start-blink {
@@ -200,8 +186,7 @@ body {
   .blink-text,
   .cloud,
   .float,
-  .bird,
-  .firefly {
+  .bird {
     animation: none !important;
   }
   *, *::before, *::after {

@@ -1,4 +1,4 @@
-# Prompt Quest: The Journey of Jakov
+# The Legend of Prompt: The Journey of Jakov
 
 An interactive pixel-RPG portfolio for **PDC10: Conversational AI and Prompt Engineering**
 by Jakov Benedict B. Santos (BSIT-3-A, Angeles University Foundation).
