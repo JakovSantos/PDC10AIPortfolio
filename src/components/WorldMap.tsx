@@ -198,8 +198,9 @@ export default function WorldMap() {
                       <PixelIcon name={q.icon} size={wide ? 32 : 24} />
                       <Flag state={done ? 'done' : seen ? 'seen' : 'new'} />
                     </span>
-                    <span className="frame-sm f-plank mt-0.5 whitespace-nowrap px-1 font-pixel text-[13px] font-bold leading-tight text-cream sm:text-sm">
-                      {q.id}. {q.shortTitle}
+                    <span className="frame-sm f-plank mt-0.5 whitespace-nowrap px-1 font-pixel text-sm leading-tight text-cream sm:text-base">
+                      {/* phones show the short label; full names are in the quest list below the map */}
+                      {wide ? `${q.id}. ${q.shortTitle}` : `Quest ${q.id}`}
                     </span>
                   </motion.button>
                 </li>

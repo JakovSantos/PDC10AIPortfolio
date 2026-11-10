@@ -229,7 +229,7 @@ export default function QuestLog({ id }: { id: number }) {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8, y: 8 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                  className="frame-sm f-paper drop absolute left-[44%] right-2 top-14 px-2 py-1 text-sm sm:left-[calc(12%+120px)] sm:right-auto sm:top-auto sm:bottom-[56%] sm:max-w-[55%] sm:text-base"
+                  className="frame-sm f-paper drop absolute left-[44%] right-2 top-14 px-2 py-0.5 bubble-text sm:left-[calc(12%+120px)] sm:right-auto sm:top-auto sm:bottom-[56%] sm:max-w-[55%]"
                 >
                   {scene.line}
                 </motion.div>

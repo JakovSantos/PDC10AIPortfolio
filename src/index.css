@@ -172,14 +172,28 @@ body {
   }
 }
 
-/* DotGothic16 has a single weight: never fake-bold or fake-italic it, so pixels stay crisp */
+/* Jersey 10: one heavy weight. Never fake-bold it (keeps pixels crisp), and scale it up
+   so its small x-height matches the body text at the same font-size. */
 .font-pixel,
 .pixel-label,
 .pixel-btn,
 .pixel-btn-light,
-.pixel-btn-gold {
+.pixel-btn-gold,
+.bubble-text {
   font-synthesis: none;
-  /* proportional punctuation: DotGothic16 is a Japanese font with full-width commas */
-  font-feature-settings: "palt" 1;
-  letter-spacing: 0.02em;
+  font-size-adjust: 0.5;
+  letter-spacing: 0.03em;
+}
+
+/* Dialogue in speech bubbles and dialog boxes uses the pixel font */
+.bubble-text {
+  font-family: 'Jersey 10', monospace;
+  font-size: 1.2rem;
+  line-height: 1.45;
+  color: #3a2717;
+}
+@media (min-width: 640px) {
+  .bubble-text {
+    font-size: 1.3rem;
+  }
 }

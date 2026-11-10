@@ -97,7 +97,7 @@ export default function TitleScreen() {
         >
           <p className="font-pixel text-lg font-semibold text-cream small-outline sm:text-xl">~ A PDC10 Adventure ~</p>
           <h1 className="mt-1 font-pixel font-bold leading-none">
-            <span className="block text-6xl text-gold title-outline sm:text-8xl md:text-9xl">{titleScreen.title}</span>
+            <span className="block whitespace-nowrap text-6xl text-gold title-outline sm:text-7xl md:text-8xl">{titleScreen.title}</span>
           </h1>
           <div className="frame-sm f-wood drop mx-auto mt-3 inline-block px-4 py-1">
             <span className="font-pixel text-lg font-semibold text-ink sm:text-2xl">{titleScreen.subtitleLine}</span>
@@ -116,9 +116,9 @@ export default function TitleScreen() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 }}
-              className="frame-sm f-paper drop absolute bottom-[70%] left-[calc(50%+80px)] z-10 hidden w-max max-w-[220px] px-3 py-2 sm:block"
+              className="frame-sm f-paper drop absolute bottom-[52%] left-[calc(50%+70px)] z-10 hidden w-max max-w-[220px] px-3 py-2 sm:block"
             >
-              <p className="text-sm">Hi! I'm Jakov. Ready for a quest?</p>
+              <p className="bubble-text">Hi! I'm Jakov. Ready for a quest?</p>
             </motion.div>
           )}
         </div>

@@ -27,7 +27,7 @@ export default {
         slate: '#2d2b3d',
       },
       fontFamily: {
-        pixel: ['"DotGothic16"', 'monospace'],
+        pixel: ['"Jersey 10"', 'monospace'],
         sans: ['Inter', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'Consolas', 'monospace'],
       },

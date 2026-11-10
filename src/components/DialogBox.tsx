@@ -44,7 +44,7 @@ export default function DialogBox({
       )}
       <div className="flex-1">
         <p className="sr-only">{text}</p>
-        <p className="reading min-h-[3em]" aria-hidden="true">
+        <p className="bubble-text min-h-[3em]" aria-hidden="true">
           {text.slice(0, count)}
           {!done && <span className="blink-text">▌</span>}
         </p>

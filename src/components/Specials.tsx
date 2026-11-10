@@ -297,8 +297,8 @@ export function OrganizeDemo() {
             <span className="hidden shrink-0 sm:block">
               <Avatar pose={step === last ? 'victory' : step === 2 ? 'chin' : step === 0 ? 'curious' : 'idle'} size={84} bob={false} />
             </span>
-            <p className="reading frame-sm f-blue flex-1">
-              <b className="font-pixel text-base text-ink">AGENT:</b> {s.text}
+            <p className="bubble-text frame-sm f-blue flex-1">
+              <b className="text-lanyard">AGENT:</b> {s.text}
             </p>
           </div>
 
