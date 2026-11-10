@@ -117,19 +117,39 @@ export default function Avatar({
   )
 }
 
-/** A circular head-and-shoulders portrait cropped from the idle sprite. */
+/*
+  Head position measured in each 228x332 sprite (centre of the hair, top of the hair).
+  The portrait shows a 150x150 square starting 8px above the hair, so the whole face fits.
+*/
+const HEAD: Record<string, { cx: number; top: number }> = {
+  idle: { cx: 114, top: 12 },
+  happy: { cx: 114, top: 12 },
+  curious: { cx: 134, top: 13 },
+  thinking: { cx: 116, top: 12 },
+  chin: { cx: 108, top: 12 },
+  adventure: { cx: 120, top: 15 },
+  walk1: { cx: 117, top: 18 },
+  victory: { cx: 116, top: 23 },
+  cheer: { cx: 115, top: 3 },
+  back: { cx: 113, top: 4 },
+}
+const CROP = 150
+
+/** A head-and-shoulders portrait cropped around the full face. */
 export function AvatarPortrait({ size = 40, pose = 'happy' }: { size?: number; pose?: Pose }) {
   const name = pose === 'walk' ? 'walk1' : STILL[pose]
+  const head = HEAD[name] ?? HEAD.idle
+  const k = size / CROP
   return (
     <span
       aria-hidden="true"
-      className="inline-block overflow-hidden"
+      className="inline-block shrink-0 overflow-hidden align-middle"
       style={{
         width: size,
         height: size,
         backgroundImage: `url(${src(name)})`,
-        backgroundSize: `${size * 2.4}px auto`,
-        backgroundPosition: '50% 4%',
+        backgroundSize: `${SPRITE_W * k}px ${SPRITE_H * k}px`,
+        backgroundPosition: `${-(head.cx - CROP / 2) * k}px ${-(head.top - 8) * k}px`,
         backgroundRepeat: 'no-repeat',
       }}
     />

@@ -206,7 +206,7 @@ export default function QuestLog({ id }: { id: number }) {
       <div className="sticky z-30 px-2" style={{ top: hudH }}>
         <div className="frame-sm f-wood mx-auto flex max-w-4xl items-center gap-2 px-2 py-0.5">
           <span className="font-pixel text-base font-bold text-lanyard">XP</span>
-          <div className="frame-sm f-dark h-5 flex-1 p-0" aria-hidden="true">
+          <div className="frame-sm f-dark h-6 flex-1 p-0" aria-hidden="true">
             <motion.div className="h-full origin-left bg-gradient-to-r from-gold to-lanyard" style={{ scaleX: xp }} />
           </div>
           <span className="font-pixel text-base font-bold">Quest {id}/7</span>

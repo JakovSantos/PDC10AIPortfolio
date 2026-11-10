@@ -1,5 +1,12 @@
-// Pixel-art 9-slice frames (12x12 SVG, 4px edges) exposed as CSS variables
-// so every panel, button, and box shares the same 16-bit RPG look.
+// Pixel-art frames for panels, buttons, and boxes.
+//
+// Each frame is painted as ONE background made of solid-colour rectangles
+// (linear-gradient layers) inside a transparent border. Unlike CSS border-image,
+// which draws 9 separate slices, a single background cannot split into a hairline
+// gap when the element moves by a fraction of a pixel (e.g. on hover).
+//
+// Design: a 12x12 pixel frame with 4-pixel edges, scaled by `u` CSS px per pixel.
+// .frame uses u = 3 (12px border), .frame-sm uses u = 2 (8px border).
 
 interface FramePalette {
   outline: string
@@ -8,36 +15,6 @@ interface FramePalette {
   dark: string
   inner: string
   fill: string
-}
-
-function frame(p: FramePalette) {
-  const r = (x: number, y: number, w: number, h: number, c: string) =>
-    `<rect x='${x}' y='${y}' width='${w}' height='${h}' fill='${c}'/>`
-  const svg =
-    `<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' shape-rendering='crispEdges'>` +
-    // body (cross shape keeps the corners cut)
-    r(1, 2, 10, 8, p.mid) +
-    r(2, 1, 8, 10, p.mid) +
-    // bevel: light top/left, dark bottom/right
-    r(2, 1, 8, 1, p.light) +
-    r(1, 2, 1, 7, p.light) +
-    r(2, 10, 8, 1, p.dark) +
-    r(10, 3, 1, 7, p.dark) +
-    // outline with stepped corners
-    r(2, 0, 8, 1, p.outline) +
-    r(2, 11, 8, 1, p.outline) +
-    r(0, 2, 1, 8, p.outline) +
-    r(11, 2, 1, 8, p.outline) +
-    r(1, 1, 1, 1, p.outline) +
-    r(10, 1, 1, 1, p.outline) +
-    r(1, 10, 1, 1, p.outline) +
-    r(10, 10, 1, 1, p.outline) +
-    // inner groove
-    r(3, 3, 6, 6, p.inner) +
-    // fill
-    r(4, 4, 4, 4, p.fill) +
-    `</svg>`
-  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`
 }
 
 const FRAMES: Record<string, FramePalette> = {
@@ -52,7 +29,71 @@ const FRAMES: Record<string, FramePalette> = {
   stone: { outline: '#2c2a33', light: '#c9c4d6', mid: '#9a94ab', dark: '#6c6680', inner: '#57526a', fill: '#ece7f5' },
 }
 
+// Axis spec in frame pixels: inset from the start (l/t), from the end (r/b), or a fixed size (w/h).
+interface Axis {
+  from?: number
+  to?: number
+  size?: number
+}
+
+function axis(a: Axis, u: number, start: string, end: string): [string, string] {
+  if (a.from !== undefined && a.to !== undefined) return [`${start} ${a.from * u}px`, `calc(100% - ${(a.from + a.to) * u}px)`]
+  if (a.from !== undefined) return [`${start} ${a.from * u}px`, `${(a.size ?? 1) * u}px`]
+  return [`${end} ${(a.to ?? 0) * u}px`, `${(a.size ?? 1) * u}px`]
+}
+
+function rect(x: Axis, y: Axis, color: string, u: number) {
+  const [px, sx] = axis(x, u, 'left', 'right')
+  const [py, sy] = axis(y, u, 'top', 'bottom')
+  return `linear-gradient(${color},${color}) ${px} ${py} / ${sx} ${sy} no-repeat border-box`
+}
+
+function frameBackground(p: FramePalette, u: number) {
+  // Listed bottom-to-top, then reversed (CSS paints the first layer on top).
+  const layers = [
+    rect({ from: 1, to: 1 }, { from: 2, to: 2 }, p.mid, u),
+    rect({ from: 2, to: 2 }, { from: 1, to: 1 }, p.mid, u),
+    // bevel: light top/left, dark bottom/right
+    rect({ from: 2, to: 2 }, { from: 1, size: 1 }, p.light, u),
+    rect({ from: 1, size: 1 }, { from: 2, to: 3 }, p.light, u),
+    rect({ from: 2, to: 2 }, { to: 1, size: 1 }, p.dark, u),
+    rect({ to: 1, size: 1 }, { from: 3, to: 2 }, p.dark, u),
+    // outline with stepped corners
+    rect({ from: 2, to: 2 }, { from: 0, size: 1 }, p.outline, u),
+    rect({ from: 2, to: 2 }, { to: 0, size: 1 }, p.outline, u),
+    rect({ from: 0, size: 1 }, { from: 2, to: 2 }, p.outline, u),
+    rect({ to: 0, size: 1 }, { from: 2, to: 2 }, p.outline, u),
+    rect({ from: 1, size: 1 }, { from: 1, size: 1 }, p.outline, u),
+    rect({ to: 1, size: 1 }, { from: 1, size: 1 }, p.outline, u),
+    rect({ from: 1, size: 1 }, { to: 1, size: 1 }, p.outline, u),
+    rect({ to: 1, size: 1 }, { to: 1, size: 1 }, p.outline, u),
+    // inner groove, then the fill behind the content
+    rect({ from: 3, to: 3 }, { from: 3, to: 3 }, p.inner, u),
+    rect({ from: 4, to: 4 }, { from: 4, to: 4 }, p.fill, u),
+  ]
+  return layers.reverse().join(',')
+}
+
 export function installFrames() {
-  const root = document.documentElement
-  for (const [name, pal] of Object.entries(FRAMES)) root.style.setProperty(`--frame-${name}`, frame(pal))
+  const css: string[] = []
+  for (const [name, pal] of Object.entries(FRAMES)) {
+    css.push(`.frame.f-${name}{background:${frameBackground(pal, 3)}}`)
+    css.push(`.frame-sm.f-${name}{background:${frameBackground(pal, 2)}}`)
+  }
+  // Component classes built with @apply in index.css (they don't carry .frame/.f-* themselves)
+  const components: [string, string, number][] = [
+    ['.pixel-box', 'wood', 3],
+    ['.pixel-box-flat', 'paper', 2],
+    ['.prompt-box', 'dark', 2],
+    ['.pixel-btn', 'red', 2],
+    ['.pixel-btn-light', 'paper', 2],
+    ['.pixel-btn-gold', 'gold', 2],
+  ]
+  for (const [sel, name, u] of components) css.push(`${sel}{background:${frameBackground(FRAMES[name], u)}}`)
+  // Map labels turn red while their quest node is hovered or focused
+  css.push(`.group:hover .frame-sm.hover-red,.group:focus-visible .frame-sm.hover-red{background:${frameBackground(FRAMES.red, 2)}}`)
+  const style = document.createElement('style')
+  style.id = 'pixel-frames'
+  style.textContent = css.join('\n')
+  document.head.appendChild(style)
 }

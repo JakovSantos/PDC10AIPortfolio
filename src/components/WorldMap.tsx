@@ -179,30 +179,32 @@ export default function WorldMap() {
               const done = completed.includes(q.id)
               const seen = visited.includes(q.id)
               return (
-                <li key={q.id} className="contents">
-                  <motion.button
+                // The <li> does the centering; the button only lifts on hover, so the two transforms never fight.
+                <li key={q.id} className="absolute z-10 -translate-x-1/2 -translate-y-1/2 hover:z-30 focus-within:z-30" style={pos}>
+                  <button
                     type="button"
                     onClick={() => openQuest(q.id)}
                     disabled={busy}
-                    whileHover={reduce ? undefined : { y: -6 }}
-                    whileFocus={reduce ? undefined : { y: -6 }}
-                    className={`group absolute z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center ${busy ? 'cursor-wait' : ''}`}
-                    style={pos}
+                    className={`group flex flex-col items-center transition-transform duration-150 ease-out hover:-translate-y-1 focus-visible:-translate-y-1 motion-reduce:transform-none ${
+                      busy ? 'cursor-wait' : ''
+                    }`}
                     aria-label={`Quest ${q.id}: ${q.shortTitle}${done ? ', completed' : seen ? ', visited' : ''}`}
                   >
                     <span
-                      className={`frame-sm relative transition-[filter] group-hover:[filter:drop-shadow(0_0_8px_rgba(255,236,150,1))] group-focus-visible:[filter:drop-shadow(0_0_8px_rgba(255,236,150,1))] ${
+                      className={`frame-sm relative transition-[filter] duration-150 group-hover:[animation-play-state:paused] group-hover:[filter:drop-shadow(0_0_6px_rgba(255,236,150,1))_drop-shadow(0_4px_0_rgba(58,39,23,0.35))] group-focus-visible:[filter:drop-shadow(0_0_6px_rgba(255,236,150,1))] ${
                         q.id === 7 || done ? 'f-gold' : 'f-stone'
                       } ${!seen && !reduce ? 'float' : ''}`}
                     >
                       <PixelIcon name={q.icon} size={wide ? 32 : 24} />
                       <Flag state={done ? 'done' : seen ? 'seen' : 'new'} />
                     </span>
-                    <span className="frame-sm f-plank mt-0.5 whitespace-nowrap px-1 font-pixel text-sm leading-tight text-cream sm:text-base">
+                    <span
+                      className={`frame-sm mt-0.5 whitespace-nowrap px-1 font-pixel text-sm leading-tight text-cream sm:text-base f-plank hover-red`}
+                    >
                       {/* phones show the short label; full names are in the quest list below the map */}
                       {wide ? `${q.id}. ${q.shortTitle}` : `Quest ${q.id}`}
                     </span>
-                  </motion.button>
+                  </button>
                 </li>
               )
             })}

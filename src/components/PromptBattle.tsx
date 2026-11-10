@@ -26,7 +26,7 @@ function Bar({ value, max, color, label }: { value: number; max: number; color: 
         <span>{label}</span>
         <span>{value}</span>
       </div>
-      <div className="frame-sm f-dark h-4 p-0">
+      <div className="frame-sm f-dark h-6 p-0">
         <motion.div
           className="h-full"
           style={{ background: color }}

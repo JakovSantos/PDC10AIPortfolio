@@ -25,29 +25,25 @@ body {
 }
 
 @layer components {
-  /* ---------- 9-slice pixel frames (see src/lib/frames.ts) ---------- */
+  /* ---------- pixel frames ----------
+     The border is transparent spacing; the frame itself is painted as one
+     background by src/lib/frames.ts (no slices, so no hairline seams on hover). */
   .frame {
-    border-style: solid;
-    border-width: 12px;
-    border-image-slice: 4 fill;
-    border-image-width: 12px;
-    border-image-repeat: stretch;
-    background: none;
+    border: 12px solid transparent;
   }
   .frame-sm {
-    @apply frame;
-    border-width: 8px;
-    border-image-width: 8px;
+    border: 8px solid transparent;
   }
-  .f-wood { border-image-source: var(--frame-wood); }
-  .f-paper { border-image-source: var(--frame-paper); }
-  .f-plank { border-image-source: var(--frame-plank); }
-  .f-dark { border-image-source: var(--frame-dark); }
-  .f-red { border-image-source: var(--frame-red); }
-  .f-gold { border-image-source: var(--frame-gold); }
-  .f-green { border-image-source: var(--frame-green); }
-  .f-blue { border-image-source: var(--frame-blue); }
-  .f-stone { border-image-source: var(--frame-stone); }
+  /* palette markers (the matching backgrounds are injected by frames.ts) */
+  .f-wood { --frame: wood; }
+  .f-paper { --frame: paper; }
+  .f-plank { --frame: plank; }
+  .f-dark { --frame: dark; }
+  .f-red { --frame: red; }
+  .f-gold { --frame: gold; }
+  .f-green { --frame: green; }
+  .f-blue { --frame: blue; }
+  .f-stone { --frame: stone; }
 
   .drop {
     filter: drop-shadow(4px 4px 0 rgba(58, 39, 23, 0.35));
