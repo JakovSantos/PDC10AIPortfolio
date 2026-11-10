@@ -113,7 +113,7 @@ export default function PromptBattle({ battle }: { battle: Battle }) {
   return (
     <div>
       {/* Arena */}
-      <div className="frame-sm f-dark mb-4 text-cream">
+      <div className="frame-sm f-dark mb-4 p-3 text-cream">
         <div className="grid grid-cols-[1fr_auto_1fr] items-end gap-2 sm:gap-4">
           <div className="flex flex-col items-center">
             <div className="flex h-24 items-end">

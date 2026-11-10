@@ -137,13 +137,13 @@ export default function TitleScreen() {
       {/* Logo + menu (left side) */}
       <div className="relative z-20 flex h-full max-w-xl flex-col px-5 pb-5 pt-[7vh] sm:px-10 md:pl-[6vw]">
         <motion.div initial={{ y: -30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: 'spring', stiffness: 110, damping: 14 }}>
-          <p className="font-pixel text-lg text-cream title-shadow-sm sm:text-xl">~ A PDC10 Adventure ~</p>
+          <p className="font-pixel text-lg text-cream title-shadow-sm sm:text-xl">~ PDC10 Portfolio ~</p>
           <h1 className="font-pixel leading-[0.9]" aria-label={titleScreen.title}>
-            <span className="block text-3xl text-cream title-outline sm:text-5xl" aria-hidden="true">
-              {titleScreen.logoTop}
-            </span>
-            <span className="logo-text block text-7xl sm:text-9xl lg:text-[10rem]" aria-hidden="true">
+            <span className="logo-text block whitespace-nowrap text-6xl sm:text-8xl lg:text-9xl" aria-hidden="true">
               {titleScreen.logoMain}
+            </span>
+            <span className="mt-1 block text-2xl text-cream title-outline sm:text-4xl" aria-hidden="true">
+              {titleScreen.logoSub}
             </span>
           </h1>
           <div className="frame-sm f-wood drop mt-3 inline-block px-3">

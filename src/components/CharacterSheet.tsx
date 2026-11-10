@@ -34,28 +34,48 @@ const EMOTES: { pose: Pose; label: string }[] = [
   { pose: 'victory', label: 'Victory' },
 ]
 
-function Medal({ letter }: { letter: string }) {
+// Pixel medal: ribbon on top, round gold disc with a pixel star in the middle.
+const MEDAL_STAR = ['...#...', '...#...', '#######', '.#####.', '..###..', '.##.##.', '##...##']
+
+function MedalFace({ shiny = false, back = false }: { shiny?: boolean; back?: boolean }) {
+  const disc: JSX.Element[] = []
+  const cx = 8
+  const cy = 11
+  for (let dy = -6; dy <= 6; dy++) {
+    const half = Math.floor(Math.sqrt(36 - dy * dy) + 0.35)
+    disc.push(<rect key={`o${dy}`} x={cx - half - 1} y={cy + dy} width={half * 2 + 3} height={1} fill="#3a2717" />)
+  }
+  for (let dy = -5; dy <= 5; dy++) {
+    const half = Math.floor(Math.sqrt(25 - dy * dy) + 0.35)
+    disc.push(
+      <rect key={`f${dy}`} x={cx - half} y={cy + dy} width={half * 2 + 1} height={1} fill={dy > 2 ? (shiny ? '#f2b632' : '#c4861a') : shiny ? '#ffd968' : '#f2b632'} />,
+    )
+  }
   return (
-    <span className="medal relative block h-12 w-12 shrink-0 [transform-style:preserve-3d] transition-transform duration-500 group-hover:[transform:rotateY(180deg)] group-focus-within:[transform:rotateY(180deg)]">
-      <svg viewBox="0 0 12 14" className="crisp absolute inset-0 h-full w-full [backface-visibility:hidden]" aria-hidden="true">
-        <rect x="3" y="0" width="2" height="4" fill="#d6453d" />
-        <rect x="7" y="0" width="2" height="4" fill="#3d6fb5" />
-        <rect x="3" y="4" width="6" height="1" fill="#3a2717" />
-        <rect x="2" y="5" width="8" height="1" fill="#3a2717" />
-        <rect x="1" y="6" width="10" height="6" fill="#3a2717" />
-        <rect x="2" y="12" width="8" height="1" fill="#3a2717" />
-        <rect x="2" y="6" width="8" height="6" fill="#f2b632" />
-        <rect x="3" y="5" width="6" height="1" fill="#f2b632" />
-        <rect x="3" y="12" width="6" height="0" fill="#f2b632" />
-        <rect x="2" y="6" width="2" height="2" fill="#ffe7a1" />
-        <rect x="8" y="10" width="2" height="2" fill="#c4861a" />
-      </svg>
-      <span className="absolute inset-0 flex items-center justify-center pt-3 font-pixel text-lg font-bold text-ink [backface-visibility:hidden]">
-        {letter}
-      </span>
-      <span className="absolute inset-0 flex items-center justify-center pt-2 text-2xl [backface-visibility:hidden] [transform:rotateY(180deg)]">
-        ★
-      </span>
+    <svg
+      viewBox="0 0 17 18"
+      className={`crisp absolute inset-0 h-full w-full [backface-visibility:hidden] ${back ? '[transform:rotateY(180deg)]' : ''}`}
+      aria-hidden="true"
+    >
+      <rect x="4" y="0" width="3" height="5" fill="#d6453d" />
+      <rect x="10" y="0" width="3" height="5" fill="#3d6fb5" />
+      <rect x="4" y="4" width="9" height="1" fill="#3a2717" />
+      {disc}
+      <rect x="4" y="7" width="2" height="1" fill={shiny ? '#fffbe6' : '#ffe7a1'} />
+      {MEDAL_STAR.map((row, y) =>
+        row.split('').map((ch, x) =>
+          ch === '#' ? <rect key={`s${x}-${y}`} x={5 + x} y={8 + y} width={1.02} height={1.02} fill={shiny ? '#ffffff' : '#fff6c9'} /> : null,
+        ),
+      )}
+    </svg>
+  )
+}
+
+function Medal() {
+  return (
+    <span className="medal relative block h-14 w-14 shrink-0 [transform-style:preserve-3d] transition-transform duration-500 group-hover:[transform:rotateY(180deg)] group-focus-within:[transform:rotateY(180deg)]">
+      <MedalFace />
+      <MedalFace shiny back />
     </span>
   )
 }
@@ -67,10 +87,10 @@ function Badge({ cert, index }: { cert: (typeof profile.certifications)[number];
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.05 }}
-      className="group frame-sm f-paper flex flex-col transition-[filter,transform] duration-200 [perspective:400px] hover:-translate-y-1 hover:[filter:drop-shadow(0_0_10px_rgba(242,182,50,0.9))] focus-within:[filter:drop-shadow(0_0_10px_rgba(242,182,50,0.9))]"
+      className="group frame-sm f-paper flex flex-col px-3 py-2.5 transition-[filter,transform] duration-200 [perspective:400px] hover:-translate-y-1 hover:[filter:drop-shadow(0_0_10px_rgba(242,182,50,0.9))] focus-within:[filter:drop-shadow(0_0_10px_rgba(242,182,50,0.9))]"
     >
       <div className="flex items-start gap-3">
-        <Medal letter={cert.issuer.replace(/[^A-Z]/g, '').slice(0, 2) || cert.issuer[0]} />
+        <Medal />
         <div>
           <p className="text-sm font-semibold leading-snug">{cert.name}</p>
           <p className="mt-0.5 text-xs text-inksoft">
@@ -121,7 +141,7 @@ export default function CharacterSheet() {
               </button>
             ))}
           </div>
-          <p className="frame-sm f-gold mt-3 text-center font-pixel text-xl font-bold">{profile.name}</p>
+          <p className="frame-sm f-gold mt-3 px-3 py-1 text-center font-pixel text-xl font-bold">{profile.name}</p>
           <dl className="mt-3 space-y-2 text-sm">
             <div>
               <dt className="pixel-label text-inksoft">Class</dt>
@@ -142,7 +162,7 @@ export default function CharacterSheet() {
             <p className="-mt-2 mb-3 text-xs text-inksoft">Experience</p>
             <ul className="space-y-3">
               {profile.guildRoles.map((r) => (
-                <li key={r.title} className="frame-sm f-paper">
+                <li key={r.title} className="frame-sm f-paper px-3 py-2.5">
                   <p className="font-semibold">{r.title}</p>
                   <p className="text-sm text-inksoft">
                     {r.org} · {r.period} · {r.location}
@@ -157,7 +177,7 @@ export default function CharacterSheet() {
             <p className="-mt-2 mb-3 text-xs text-inksoft">Education</p>
             <ul className="space-y-3">
               {profile.education.map((e) => (
-                <li key={e.school} className="frame-sm f-paper">
+                <li key={e.school} className="frame-sm f-paper px-3 py-2.5">
                   <p className="font-semibold">{e.school}</p>
                   <p className="text-sm text-inksoft">
                     {e.degree} · {e.period}
@@ -173,7 +193,7 @@ export default function CharacterSheet() {
       <Panel title="Equipped Skills" icon="🎒" className="mt-6">
         <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
           {profile.skills.map((s, i) => (
-            <li key={s} className="frame-sm f-stone flex items-center gap-2 px-1.5 py-1 text-sm transition-transform hover:-translate-y-0.5">
+            <li key={s} className="frame-sm f-stone flex items-center gap-2 px-2.5 py-1.5 text-sm transition-transform hover:-translate-y-0.5">
               <svg viewBox="0 0 5 5" width="15" height="15" className="crisp shrink-0" aria-hidden="true">
                 <rect x="1" y="0" width="3" height="5" fill={['#d6453d', '#3d6fb5', '#4f8f3a', '#f2b632', '#9b5de5'][i % 5]} />
                 <rect x="0" y="1" width="5" height="3" fill={['#d6453d', '#3d6fb5', '#4f8f3a', '#f2b632', '#9b5de5'][i % 5]} />

@@ -1,5 +1,5 @@
 /* =====================================================================
-   THE LEGEND OF PROMPT: all editable portfolio content lives in this one file.
+   LEVEL UP! A PROMPTING ADVENTURE: all editable portfolio content lives in this one file.
    Edit text here without touching any component.
    Items marked [ADD: ...] are placeholders for details that were not
    found in the source materials.
@@ -206,10 +206,10 @@ export const profile = {
 
 /* ======================= TITLE SCREEN ======================= */
 export const titleScreen = {
-  title: 'The Legend of Prompt',
-  // the logo is drawn as a small top line and a big main word
-  logoTop: 'The Legend of',
-  logoMain: 'Prompt',
+  title: 'LEVEL UP! A Prompting Adventure',
+  // the logo shows a big main line with a smaller line under it
+  logoMain: 'LEVEL UP!',
+  logoSub: 'A Prompting Adventure',
   subtitleLine: 'The Journey of Jakov',
   tagline: 'An AI Portfolio | PDC10 Conversational AI and Prompt Engineering',
   intro:

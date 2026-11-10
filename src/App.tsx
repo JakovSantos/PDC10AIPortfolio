@@ -32,7 +32,7 @@ function keyFor(r: Route) {
 }
 
 function titleFor(r: Route) {
-  const base = 'The Legend of Prompt: The Journey of Jakov'
+  const base = 'LEVEL UP! A Prompting Adventure | The Journey of Jakov'
   if (r.screen === 'quest') return `Quest ${r.id}: ${quests.find((q) => q.id === r.id)?.shortTitle} | ${base}`
   if (r.screen === 'summary') return `Level Up Summary | ${base}`
   if (r.screen === 'journey') return `Character and World Map | ${base}`

@@ -138,7 +138,7 @@ export function DungeonProgress() {
         </ol>
       </div>
       <AnimatePresence mode="wait">
-        <motion.div key={open} initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -12 }} className="frame-sm f-paper">
+        <motion.div key={open} initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -12 }} className="frame-sm f-paper px-3 py-2.5">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <p className="font-pixel text-xl font-bold text-lanyard">
               {lvl.level}: {lvl.name}
@@ -197,7 +197,7 @@ export function LockRow() {
   }
   return (
     <div>
-      <div className="frame-sm f-stone mb-4">
+      <div className="frame-sm f-stone mb-4 p-2">
         <ul className="grid grid-cols-3 gap-2 sm:grid-cols-6">
           {vaultLocks.map((l, i) => (
             <li key={l.name}>
@@ -223,7 +223,7 @@ export function LockRow() {
       </button>
       <AnimatePresence mode="wait">
         {active !== null && (
-          <motion.div key={active} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="frame-sm f-paper">
+          <motion.div key={active} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="frame-sm f-paper px-3 py-2.5">
             <p className="font-pixel text-xl font-bold text-lanyard">
               Lock {active + 1}: {vaultLocks[active].name}
             </p>
@@ -270,7 +270,7 @@ export function OrganizeDemo() {
   }
 
   return (
-    <div className="frame-sm f-paper">
+    <div className="frame-sm f-paper px-3 py-2.5">
       <ol className="mb-4 flex flex-wrap items-center gap-1" aria-label="Agent cycle">
         {organizeDemo.steps.map((st, i) => (
           <li key={st.name} className="flex items-center gap-1" aria-current={i === step ? 'step' : undefined}>
@@ -297,7 +297,7 @@ export function OrganizeDemo() {
             <span className="hidden shrink-0 sm:block">
               <Avatar pose={step === last ? 'victory' : step === 2 ? 'chin' : step === 0 ? 'curious' : 'idle'} size={84} bob={false} />
             </span>
-            <p className="bubble-text frame-sm f-blue flex-1">
+            <p className="bubble-text frame-sm f-blue flex-1 px-3 py-2">
               <b className="text-lanyard">AGENT:</b> {s.text}
             </p>
           </div>
@@ -396,7 +396,7 @@ export function Rulebook() {
         }}
         aria-expanded={open}
         aria-controls="rulebook"
-        className="flex w-full items-center justify-between gap-3 p-2 text-left"
+        className="flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left"
       >
         <span className="flex items-center gap-3">
           <svg viewBox="0 0 10 8" width={36} height={29} className="crisp" aria-hidden="true">
@@ -426,7 +426,7 @@ export function Rulebook() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="space-y-2 overflow-hidden px-2 pb-2"
+            className="space-y-2 overflow-hidden px-3 pb-3"
           >
             {skillRules.map((r, i) => (
               <li key={i} className="reading flex gap-3 border-t-2 border-dashed border-ink/20 pt-2">

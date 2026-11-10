@@ -26,12 +26,12 @@ export default function Hud() {
           type="button"
           onClick={() => nav({ screen: 'title' })}
           className="flex items-center gap-2"
-          aria-label="The Legend of Prompt: back to title screen"
+          aria-label="LEVEL UP! A Prompting Adventure: back to title screen"
         >
           <span className="frame-sm f-blue">
             <AvatarPortrait size={30} />
           </span>
-          <span className="hidden font-pixel text-xl font-bold text-gold small-outline sm:inline">{titleScreen.title}</span>
+          <span className="hidden font-pixel text-xl font-bold text-gold small-outline sm:inline">{titleScreen.logoMain}</span>
         </button>
 
         <nav aria-label="Main" className="flex gap-1">

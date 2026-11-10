@@ -34,7 +34,7 @@ function Section({ icon, title, children }: { icon: IconName; title: string; chi
 
 function Block({ b }: { b: WalkthroughBlock }) {
   return (
-    <div className="frame-sm f-paper">
+    <div className="frame-sm f-paper px-3 py-2.5">
       <h3 className="mb-2 flex items-center gap-2 font-semibold">
         <span className="inline-block h-2 w-2 bg-lanyard" aria-hidden="true" />
         {b.heading}
@@ -141,7 +141,7 @@ function Loot({ xp }: { xp: string[] }) {
             initial={{ opacity: 0, y: 20, scale: 0.8 }}
             animate={open ? { opacity: 1, y: 0, scale: 1 } : {}}
             transition={{ delay: 0.25 + i * 0.15, type: 'spring', stiffness: 220, damping: 16 }}
-            className="frame-sm f-paper flex items-start gap-2"
+            className="frame-sm f-paper flex items-start gap-2 px-3 py-2.5"
           >
             <span className="shrink-0 pt-0.5">
               <PixelIcon name="gem" size={20} accent={['#d6453d', '#3d6fb5', '#4f8f3a', '#9b5de5'][i % 4]} />
@@ -253,7 +253,7 @@ export default function QuestLog({ id }: { id: number }) {
                 ['Platform(s)', quest.platforms.join(', ')],
                 ['Team', quest.team ? `${quest.team.name} (${quest.team.section})` : 'Solo quest'],
               ].map(([k, v]) => (
-                <div key={k} className="frame-sm f-paper">
+                <div key={k} className="frame-sm f-paper px-3 py-2">
                   <dt className="pixel-label text-inksoft">{k}</dt>
                   <dd>{v}</dd>
                 </div>
@@ -276,7 +276,7 @@ export default function QuestLog({ id }: { id: number }) {
         {/* c. Party and gear */}
         <Section icon="shield" title="Party and Gear">
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="frame-sm f-paper">
+            <div className="frame-sm f-paper px-3 py-2.5">
               <h3 className="pixel-label mb-2 text-inksoft">Party</h3>
               <ul className="space-y-2">
                 <li className="flex items-center gap-3">
@@ -306,7 +306,7 @@ export default function QuestLog({ id }: { id: number }) {
                 </p>
               )}
             </div>
-            <div className="frame-sm f-paper">
+            <div className="frame-sm f-paper px-3 py-2.5">
               <h3 className="pixel-label mb-2 text-inksoft">Gear</h3>
               <ul className="space-y-2">
                 {quest.gear.map((g, i) => (
@@ -333,7 +333,7 @@ export default function QuestLog({ id }: { id: number }) {
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08, type: 'spring' }}
-                  className="frame-sm f-blue text-center"
+                  className="frame-sm f-blue px-2 py-2.5 text-center"
                 >
                   <p className="font-pixel text-2xl font-bold leading-tight">{s.value}</p>
                   <p className="mt-1 text-xs">{s.label}</p>
@@ -357,7 +357,7 @@ export default function QuestLog({ id }: { id: number }) {
         {/* f. Reflection */}
         <Section icon="mirror" title="Reflection">
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="frame-sm f-stone">
+            <div className="frame-sm f-stone px-3 py-2.5">
               <div className="mb-2 flex items-center gap-2">
                 <span className="frame-sm f-paper p-0">
                   <AvatarPortrait size={40} pose="thinking" />
@@ -366,7 +366,7 @@ export default function QuestLog({ id }: { id: number }) {
               </div>
               <p className="reading">{quest.reflection.before}</p>
             </div>
-            <div className="frame-sm f-gold">
+            <div className="frame-sm f-gold px-3 py-2.5">
               <div className="mb-2 flex items-center gap-2">
                 <span className="frame-sm f-paper p-0">
                   <AvatarPortrait size={40} pose="happy" />

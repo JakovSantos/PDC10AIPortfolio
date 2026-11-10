@@ -31,7 +31,7 @@ export default function DialogBox({
   }, [count, done, speed])
 
   return (
-    <div className={`pixel-box relative flex gap-3 p-2 pt-3 sm:gap-4 ${className}`}>
+    <div className={`pixel-box relative flex gap-3 px-3 pb-2 pt-4 sm:gap-4 sm:px-4 ${className}`}>
       {speaker && (
         <span className="frame-sm f-red absolute -top-5 left-3 px-2 font-pixel text-base font-bold text-white sm:text-lg">
           {speaker}

@@ -40,7 +40,7 @@ export default function FinalScreen() {
       <div className="text-center">
         <Plaque>Level Up Summary</Plaque>
       </div>
-      <p className="frame-sm f-paper mx-auto -mt-2 mb-6 block w-fit text-center text-sm">
+      <p className="frame-sm f-paper mx-auto -mt-2 mb-6 block w-fit px-3 py-1 text-center text-sm">
         Prompting Lv.{level} · {completed.length} of 7 quests completed
       </p>
 

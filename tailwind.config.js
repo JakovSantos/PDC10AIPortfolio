@@ -28,7 +28,8 @@ export default {
       },
       fontFamily: {
         pixel: ['"Jersey 10"', 'monospace'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        // body text uses a clean monospace for a retro, code-like feel that stays readable
+        sans: ['"JetBrains Mono"', 'ui-monospace', 'Consolas', 'monospace'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'Consolas', 'monospace'],
       },
     },

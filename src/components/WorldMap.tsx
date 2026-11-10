@@ -226,7 +226,7 @@ export default function WorldMap() {
         </div>
       </div>
 
-      <p className="frame-sm f-paper mt-3 inline-block text-sm">
+      <p className="frame-sm f-paper mt-3 inline-block px-3 py-2 text-sm">
         Tip: Tab moves between quests, Enter opens one. Flags turn <b className="text-lanyard">red</b> when visited and{' '}
         <b className="text-[#9a6a08]">gold</b> when completed.
       </p>
@@ -238,7 +238,7 @@ export default function WorldMap() {
               type="button"
               onClick={() => openQuest(q.id)}
               disabled={busy}
-              className="frame-sm f-paper flex w-full items-center gap-3 text-left transition-transform hover:-translate-y-1"
+              className="frame-sm f-paper flex w-full items-center gap-3 px-3 py-2 text-left transition-transform hover:-translate-y-1"
             >
               <PixelIcon name={q.icon} size={26} />
               <span>
