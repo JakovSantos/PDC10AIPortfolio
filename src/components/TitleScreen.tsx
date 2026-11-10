@@ -71,14 +71,21 @@ export default function TitleScreen() {
     { label: `Sound: ${sound ? 'On' : 'Off'}`, hint: 'Optional 8-bit sound effects', action: toggleSound },
   ]
 
+  // Don't auto-focus Press Start (that drew a focus outline on load); Enter/Space start the game instead.
   useEffect(() => {
-    if (!started) startBtn.current?.focus({ preventScroll: true })
-    else itemRefs.current[0]?.focus({ preventScroll: true })
+    if (started) itemRefs.current[0]?.focus({ preventScroll: true })
   }, [started])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (!started) return
+      if (!started) {
+        const onButton = e.target instanceof HTMLElement && e.target.closest('button')
+        if (!onButton && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault()
+          start()
+        }
+        return
+      }
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault()
         playSfx('step')
@@ -155,8 +162,8 @@ export default function TitleScreen() {
           <AnimatePresence mode="wait">
             {!started ? (
               <motion.div key="start" exit={{ opacity: 0, x: -20 }}>
-                <button ref={startBtn} type="button" onClick={start} className="menu-item text-4xl sm:text-5xl">
-                  <span className="blink-text">▶ Press Start</span>
+                <button ref={startBtn} type="button" onClick={start} className="pixel-btn-gold px-6 py-2 text-3xl sm:px-8 sm:text-4xl">
+                  <span className="blink-text" aria-hidden="true">▶</span> Press Start
                 </button>
               </motion.div>
             ) : (

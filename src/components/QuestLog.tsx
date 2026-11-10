@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useInView, useReducedMotion, useScroll, useSpring } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Avatar, { AvatarPortrait } from './Avatar'
 import PixelIcon, { type IconName } from './PixelIcon'
 import PromptBattle from './PromptBattle'
@@ -163,7 +163,10 @@ export default function QuestLog({ id }: { id: number }) {
   const reduce = useReducedMotion()
   const article = useRef<HTMLElement>(null)
   const stamp = useRef<HTMLDivElement>(null)
-  const stampSeen = useInView(stamp, { once: true, amount: 0.6 })
+  const stampInView = useInView(stamp, { amount: 0.6 })
+  // The stamp only counts once the page has settled at the top (armed) and the reader scrolls down to it.
+  const [armed, setArmed] = useState(false)
+  const [stampSeen, setStampSeen] = useState(false)
   const { scrollYProgress } = useScroll({ target: article, offset: ['start start', 'end end'] })
   const xp = useSpring(scrollYProgress, { stiffness: 120, damping: 25 })
   const [arrived, setArrived] = useState(false)
@@ -180,14 +183,29 @@ export default function QuestLog({ id }: { id: number }) {
     return () => ro.disconnect()
   }, [])
 
+  // Every quest opens at the very top (instant, not smooth), before the browser paints.
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior })
+    setArmed(false)
+    setStampSeen(false)
+  }, [id])
+
   useEffect(() => {
-    window.scrollTo({ top: 0 })
     visit(id)
     setArrived(false)
     const t = window.setTimeout(() => setArrived(true), reduce ? 0 : 900)
+    // Arm completion only after the page is settled at the top, and only if the stamp is not already visible.
+    const arm = window.setTimeout(() => setArmed(true), 700)
     document.getElementById('quest-title')?.focus({ preventScroll: true })
-    return () => window.clearTimeout(t)
+    return () => {
+      window.clearTimeout(t)
+      window.clearTimeout(arm)
+    }
   }, [id, visit, reduce])
+
+  useEffect(() => {
+    if (armed && stampInView && window.scrollY > 0) setStampSeen(true)
+  }, [armed, stampInView])
 
   useEffect(() => {
     if (stampSeen) complete(id)
@@ -195,6 +213,8 @@ export default function QuestLog({ id }: { id: number }) {
 
   const goTo = (r: Parameters<typeof go>[0]) => {
     playSfx('click')
+    // jump to the top first so the next page never starts scrolled to the bottom
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior })
     go(r)
   }
 

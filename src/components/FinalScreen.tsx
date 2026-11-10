@@ -17,7 +17,7 @@ export default function FinalScreen() {
   const [phase, setPhase] = useState<Phase>('ready')
 
   useEffect(() => {
-    window.scrollTo({ top: 0 })
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior })
   }, [])
 
   const levelUp = () => {
