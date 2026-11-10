@@ -6,7 +6,8 @@ import PromptBattle from './PromptBattle'
 import Scene from './Scene'
 import { Chest, Confetti, PartyBadge } from './Sprites'
 import { DungeonProgress, FrameworkSelector, LockRow, OrganizeDemo, Rulebook } from './Specials'
-import { questScenes, quests, type Quest, type WalkthroughBlock } from '../data/portfolio'
+import { questScenes, quests, reports, type Quest, type WalkthroughBlock } from '../data/portfolio'
+import FullReport from './FullReport'
 import { useGame } from '../lib/game'
 import { playSfx } from '../lib/sound'
 
@@ -348,6 +349,16 @@ export default function QuestLog({ id }: { id: number }) {
           </div>
           <Special quest={quest} />
         </Section>
+
+        {/* Full report: everything from the submitted PDF for this quest */}
+        {reports[id] && (
+          <Section icon="scrollb" title="Full Report">
+            <p className="reading mb-3 text-sm text-inksoft">
+              Everything from my submitted portfolio for this activity: my complete answers, tables, and screenshots, plus the activity instructions.
+            </p>
+            <FullReport data={reports[id]} />
+          </Section>
+        )}
 
         {/* e. Prompt battle */}
         <Section icon="swords" title="Prompt Battle">
