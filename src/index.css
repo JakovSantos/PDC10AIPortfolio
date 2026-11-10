@@ -1,0 +1,185 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #3a2717;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-sky font-sans text-ink antialiased;
+  min-height: 100vh;
+  /* keep letters separate in the pixel font (no ligatures) */
+  font-variant-ligatures: none;
+  font-feature-settings: 'liga' 0, 'clig' 0;
+}
+
+/* Visible focus for keyboard users */
+:focus-visible {
+  outline: 3px dashed #d6453d;
+  outline-offset: 4px;
+}
+
+@layer components {
+  /* ---------- 9-slice pixel frames (see src/lib/frames.ts) ---------- */
+  .frame {
+    border-style: solid;
+    border-width: 12px;
+    border-image-slice: 4 fill;
+    border-image-width: 12px;
+    border-image-repeat: stretch;
+    background: none;
+  }
+  .frame-sm {
+    @apply frame;
+    border-width: 8px;
+    border-image-width: 8px;
+  }
+  .f-wood { border-image-source: var(--frame-wood); }
+  .f-paper { border-image-source: var(--frame-paper); }
+  .f-plank { border-image-source: var(--frame-plank); }
+  .f-dark { border-image-source: var(--frame-dark); }
+  .f-red { border-image-source: var(--frame-red); }
+  .f-gold { border-image-source: var(--frame-gold); }
+  .f-green { border-image-source: var(--frame-green); }
+  .f-blue { border-image-source: var(--frame-blue); }
+  .f-stone { border-image-source: var(--frame-stone); }
+
+  .drop {
+    filter: drop-shadow(4px 4px 0 rgba(58, 39, 23, 0.35));
+  }
+
+  /* Main window: wooden frame, paper inside */
+  .pixel-box {
+    @apply frame f-wood drop;
+  }
+  /* Inner card: paper frame */
+  .pixel-box-flat {
+    @apply frame-sm f-paper;
+  }
+  .pixel-btn {
+    @apply frame-sm f-red drop inline-flex items-center justify-center gap-2 px-3 py-1.5 font-pixel text-base font-semibold leading-tight text-white transition-transform sm:text-lg;
+    text-shadow: 2px 2px 0 #7a1f1a;
+  }
+  .pixel-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+  }
+  .pixel-btn:active:not(:disabled) {
+    transform: translateY(2px);
+    filter: none;
+  }
+  .pixel-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .pixel-btn-light {
+    @apply pixel-btn f-paper text-ink;
+    text-shadow: none;
+  }
+  .pixel-btn-gold {
+    @apply pixel-btn f-gold text-ink;
+    text-shadow: 1px 1px 0 #ffe7a1;
+  }
+  .pixel-label {
+    @apply font-pixel text-[15px] font-semibold uppercase leading-snug tracking-wide sm:text-base;
+  }
+  .prompt-box {
+    @apply frame-sm f-dark whitespace-pre-wrap break-words px-3 py-2 font-mono text-sm leading-relaxed text-cream sm:text-[15px];
+  }
+  .reading {
+    @apply font-sans text-[15px] leading-relaxed text-ink sm:text-base;
+  }
+  .title-outline {
+    text-shadow:
+      3px 0 0 #3a2717, -3px 0 0 #3a2717, 0 3px 0 #3a2717, 0 -3px 0 #3a2717,
+      3px 3px 0 #3a2717, -3px 3px 0 #3a2717, 3px -3px 0 #3a2717, -3px -3px 0 #3a2717,
+      6px 6px 0 rgba(58, 39, 23, 0.45);
+  }
+  .small-outline {
+    text-shadow:
+      2px 0 0 #3a2717, -2px 0 0 #3a2717, 0 2px 0 #3a2717, 0 -2px 0 #3a2717,
+      2px 2px 0 #3a2717, -2px 2px 0 #3a2717, 2px -2px 0 #3a2717, -2px -2px 0 #3a2717;
+  }
+}
+
+@keyframes press-start-blink {
+  0%, 55% { opacity: 1; }
+  56%, 100% { opacity: 0.2; }
+}
+.blink-text {
+  animation: press-start-blink 1.1s steps(1) infinite;
+}
+
+@keyframes drift {
+  from { transform: translateX(-30vw); }
+  to { transform: translateX(130vw); }
+}
+.cloud {
+  animation-name: drift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes flap {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.float {
+  animation: float-y 2.4s ease-in-out infinite;
+}
+
+.crisp {
+  image-rendering: pixelated;
+  shape-rendering: crispEdges;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .blink-text,
+  .cloud,
+  .float,
+  .bird {
+    animation: none !important;
+  }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* DotGothic16 has a single weight: never fake-bold or fake-italic it, so pixels stay crisp */
+.font-pixel,
+.pixel-label,
+.pixel-btn,
+.pixel-btn-light,
+.pixel-btn-gold {
+  font-synthesis: none;
+  /* proportional punctuation: DotGothic16 is a Japanese font with full-width commas */
+  font-feature-settings: "palt" 1;
+  letter-spacing: 0.02em;
+}
