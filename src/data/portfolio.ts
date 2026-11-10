@@ -327,10 +327,8 @@ export const quests: Quest[] = [
       },
     },
     reflection: {
-      before:
-        'I mostly used each AI the same way, typing a quick question and taking whatever came back. I chose tools out of habit, like ChatGPT for quick answers and Claude for code.',
-      after:
-        'Running the same prompts on three systems showed me that identical prompts can still give very different styles and depth. Gemini gave the most complete answers, even adding tips I did not ask for. I learned that naming the audience in a prompt already changes how the AI explains things.',
+      before: `Before this assignment, I used each AI out of habit. ChatGPT was for quick answers and turning my transcripts into reviewers, Gemini was for topics I found hard, and Claude was for code and academic work. I would type a short question, read the first answer, and move on. I had already noticed problems, like ChatGPT mixing up details in long chats, Gemini missing errors when I asked it to check my reviewer, and Claude failing on very long prompts. But I treated those as quirks of each tool, not as something my prompts had anything to do with.`,
+      after: `Giving the exact same five prompts to Claude, ChatGPT, and Gemini was the first time I compared them side by side, and the differences surprised me. Gemini explained recursion with a Russian nesting doll and traced the call stack step by step. For the factorial program, it even pointed out Python's built-in math.factorial(), which I would not have thought to look for. For study tips, it gave me something I could actually do, like writing small scripts for 15 minutes right after learning a concept, while ChatGPT's tips felt more general. I also realized the recursion prompt already said "to a first-year college student," and all three answers adjusted to that level, so one short phrase was already doing a lot of work. Writing the essay part also stuck with me, especially the idea that a fluent answer is not always a factual one. Now I choose the tool based on what I actually need, and I say who the answer is for instead of hoping the AI guesses.`,
     },
     xp: [
       'The same prompt can give different results across platforms.',
@@ -440,10 +438,8 @@ export const quests: Quest[] = [
       techniques: ['audience', 'example', 'constraint', 'format'],
     },
     reflection: {
-      before:
-        'I thought the platform was the biggest factor in getting a good answer, so I focused on which AI to use more than on how I wrote the prompt.',
-      after:
-        'All three platforms scored 25/25, but the prompt modification experiment changed my view. My basic prompt gave a broad, technical answer with no real examples. The detailed prompt gave a shorter, clearer answer with real cases like the Colonial Pipeline and WannaCry attacks. The quality of the output depends a lot on the effort I put into the prompt.',
+      before: `Going into this lab, I expected the scores to show a clear winner. I thought the biggest factor in getting a good answer was picking the "smartest" platform, so whenever an answer disappointed me, my first move was to try a different AI. I rarely went back to rewrite my own prompt.`,
+      after: `The results did not match what I expected. ChatGPT, Gemini, and Claude all scored 25/25, all three got the energy problem right at 72 kWh, and all of them followed the three-bullet rule. The real differences were in style: ChatGPT explained cloud computing with an electricity analogy, Gemini called it renting infrastructure, and Claude compared it to Netflix and Google Docs. Part C was what changed my thinking. My basic prompt on Claude gave a long overview with six core areas, six threat types, and terms like CIA Triad, IAM, and zero-day exploits. That is useful for review, but too much for a beginner. Once I named the audience as first-year IT students with no professional cybersecurity experience, set a 200-word limit, and asked for headings and bullets, the answer focused on three threats with real cases like the DNC phishing leak, the Colonial Pipeline attack, and WannaCry. The word limit forced the AI to drop topics like cloud and endpoint security, which showed me that constraints make it decide what matters most. Now, when an answer misses the mark, I fix my prompt before I blame or switch the platform.`,
     },
     xp: [
       'Context, audience, limits, and formatting change what the AI prioritizes.',
@@ -536,10 +532,8 @@ export const quests: Quest[] = [
       },
     },
     reflection: {
-      before:
-        'I saw conversational AI as a tool that answers questions quickly, and I usually trusted answers that sounded clear and confident.',
-      after:
-        'When I asked "Which one is better?", the AI asked for clarification, and it only gave a useful answer after I added context. In the reference check, all three sources were real, but the AI listed the wrong authors for one of them. I would not have noticed without verifying. Now I add context to my prompts and check important facts myself.',
+      before: `I saw conversational AI as a fast way to get answers for school, and I judged an answer mostly by how organized and confident it sounded. If it had headings and specific details, I assumed it was correct. I did not really check sources, and I thought an AI only remembered what was in the current chat.`,
+      after: `This lab showed me that how an answer sounds and whether it is correct are two separate things. When I typed "Which one is better?", the AI asked what I meant and even guessed I was talking about the machine learning types from earlier in the chat, so it was filling gaps with old context. Once I described a small university website with mostly static pages and asked it to weigh cost, maintenance, and technical expertise, it gave a clear recommendation for a traditional CMS. The reference check was the part that changed my habits the most. All three sources were real, and the titles, years, journals, and DOIs were correct, but the second one listed the wrong authors. Because everything around the mistake was accurate, I would have copied that citation into a paper without a second look. The memory test also made me think, since it still remembered my app UniConnect in a brand new conversation, which made me more careful about what I share. Now I give context up front, check every part of a citation myself, and treat AI advice as support for my decision, not the decision itself.`,
     },
     xp: [
       'Vague prompts get vague answers.',
@@ -594,10 +588,8 @@ export const quests: Quest[] = [
       },
     },
     reflection: {
-      before:
-        'My prompts were often one line, like "Explain subnetting." I expected the AI to guess the level, audience, and format I needed.',
-      after:
-        'Rewriting one prompt seven times showed me that frameworks are a checklist for the same important parts: role, task, context, audience, format, and constraints. Each framework arranges them differently, but they all push me to say exactly who the answer is for and how it should look.',
+      before: `Most of my prompts looked like "Explain subnetting." When the answer came out too technical or too shallow, I fixed it with follow-up messages instead of saying what I wanted at the start. Prompt frameworks felt like acronyms to memorize for a quiz, not something I would actually use.`,
+      after: `Rewriting the same two-word prompt seven times made me make decisions I usually skip. First I had to choose an audience, so I settled on new IT professors teaching beginner students. Then every version needed definitions, analogies, and real-life examples, without wording that was too technical. After a few rewrites, I noticed the frameworks kept asking for the same parts in a different order: a role, a task, context, an audience, a format, and limits. They still pushed me in different directions, though. RISEN's Steps made me plan the order of the explanation, from defining subnetting up to harder ideas. TRACE's Example made me write my own comparison: organizing classrooms or neighborhoods into smaller groups so they are easier to manage. CRISPE's Experiment had me ask the AI to compare teaching analogies, which I would never have thought of on my own. The hardest part was keeping the same meaning in every version, as the lab required. Now I treat frameworks as a checklist: before I send a prompt, I check that it covers who, what, for whom, in what form, and within what limits.`,
     },
     xp: [
       'Frameworks are tools, not rules.',
@@ -665,10 +657,8 @@ export const quests: Quest[] = [
       },
     },
     reflection: {
-      before:
-        'I used to write prompts as one-time requests and did not think about how a chatbot should behave across a whole conversation.',
-      after:
-        'Because every prompt cost tokens, our team had to write short, precise repair prompts. Instead of picking letter answers, we wrote behavior rules that covered intent, slots, states, recovery, and escalation. I learned to think of prompts as instructions for how a system should act, not just questions.',
+      before: `I thought of prompts as one question and one answer. I never thought about how a chatbot should behave across a whole conversation, like when it should ask a follow-up, when it should stop asking, or when it should hand the student to a real person. When the game first offered letter choices, it felt like a regular quiz where the goal was just to pick the right letter.`,
+      after: `What changed this activity for our team, Tr-AI-ad, was that every message cost tokens from a wallet that started at 1,200. We could not just chat our way to the answer, so before sending anything, we agreed on the exact wording as a team. At Level 1, instead of only picking a letter, we wrote a repair rule: find the student's intent first, ask one focused question if the request is vague, and do not ask for personal information that is not needed. Each level after that added a layer: slots, a state-based workflow, the difference between implicit and explicit confirmation, recovery that escalates instead of looping, and finally privacy, accessibility, and escalation. The Final Boss made us combine everything into one decision rule. The line that stood out to me was "do not pretend to perform it," because a bot faking an action is worse than a bot admitting its limits. We cleared all six levels and the Final Boss and ended with 2,400 tokens. I came away seeing a good system prompt as a set of rules for the edge cases, not a single question.`,
     },
     xp: [
       'Precise wording saves tokens.',
@@ -731,9 +721,8 @@ export const quests: Quest[] = [
       techniques: ['role', 'audience', 'context', 'format', 'example', 'constraint', 'rule', 'criteria'],
     },
     reflection: {
-      before: 'I thought a long, detailed prompt was automatically a good prompt.',
-      after:
-        'Lock 3 was first marked pending because we improved the prompt but did not follow the required format for listing weaknesses. That taught me to read requirements carefully. Each lock added something: optimization, debugging, context from the instructor, testing against failure cases, and defending against adversarial input. Improving a prompt is a step-by-step process, not one rewrite.',
+      before: `I believed a longer, more detailed prompt was automatically a better prompt. If I wanted a good study guide, I would have kept adding instructions until it felt complete, and then trusted whatever came back. I had never tested a prompt on purpose to see how it could fail.`,
+      after: `Our starting point was one line asking for a comprehensive study guide for an advanced web and mobile development exam. Over six locks, it turned into a full master prompt, and the most useful lesson was that every part had to earn its place. In Lock 2, we added examples, progressive difficulty, limits on assumptions, and a final self-check. Lock 3 humbled us, because the game marked it pending even though our prompt had improved. We had skipped the required Problem, Why it matters, and Fix format. That reminded me that meeting the stated requirements matters as much as writing a strong prompt, which applies to instructors too. Lock 4 taught me something I would have gotten wrong before: the instructor gave six focus areas, and the right move was to tell the AI not to add topics the instructor never mentioned. My old habit would have been to add extra topics to be thorough. Locks 5 and 6 had us predict failures in the code analysis and the practice quiz, then add a priority rule so the instructor's areas always come first. By the end the prompt was long, but now I know length is not the goal; every line should prevent a specific problem.`,
     },
     xp: [
       'Iterate and test prompts.',
@@ -823,10 +812,8 @@ export const quests: Quest[] = [
       },
     },
     reflection: {
-      before:
-        'I used AI like a chatbot. I asked for help one step at a time and did the actual work myself.',
-      after:
-        'With the Skill, I gave the agent a goal, and it planned and did the work on my real files, then checked its own results. It still needed my approval before moving files or changing its rules. When it failed Test 1 by staying quiet instead of asking, its first suggested fix would have kept that problem, so I corrected it before approving. I learned that agentic prompting means writing clear rules and limits, not just requests.',
+      before: `I used AI like a chatbot that gives advice. I would ask how to organize my files or how to summarize a lecture, then do every step myself. Letting an AI actually move or rename my real files was something I had not tried, and honestly something I would not have trusted it to do.`,
+      after: `Writing SKILL.md felt less like writing a prompt and more like writing house rules: never delete, never overwrite, show the full plan and wait for APPROVE ORGANIZATION, and stop and ask when something is unclear. Once those rules were in place, I could give the agent a goal instead of steps. It worked out on its own that my Module 8 and 9 and Module 10 PDFs were ITE20 by reading the title slides. It also noticed that the "AY 2020-2021" stamp was probably an old template, so it asked me for the date instead of using it. When it could not remove the originals from my inbox because deleting was not allowed, I cleared them myself, and that showed me the rules were actually working. Checking its study notes kept me honest too. Four of my five checked claims were supported, but one example left out the 5:00 p.m. detail from Slide 5, so I had it make a Version 2. The moment that stuck with me most was Test 1. The agent followed my "do not ask me" instruction and stayed quiet, and its first suggested fix would have kept that same problem. I had to push back and rewrite Rule 6 before approving it. That taught me human review is needed even when the AI is fixing its own mistake.`,
     },
     xp: [
       'Goals plus rules make an agent.',
