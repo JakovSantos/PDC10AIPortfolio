@@ -67,6 +67,7 @@ export default function TitleScreen() {
       },
     },
     { label: 'Quest Map', hint: 'Jump straight to the World Map', action: () => travel({ screen: 'journey', section: 'map' }) },
+    { label: 'Side Quests', hint: 'Bonus: my own projects where I applied prompting', action: () => travel({ screen: 'journey', section: 'side' }) },
     { label: 'Level Up Summary', hint: 'See how my prompting changed overall', action: () => travel({ screen: 'summary' }) },
     { label: `Sound: ${sound ? 'On' : 'Off'}`, hint: 'Optional 8-bit sound effects', action: toggleSound },
   ]

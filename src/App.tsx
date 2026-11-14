@@ -6,9 +6,10 @@ import Hud from './components/Hud'
 import Parallax from './components/Parallax'
 import Popups from './components/Popups'
 import QuestLog from './components/QuestLog'
+import SideQuestLog from './components/SideQuestLog'
 import TitleScreen from './components/TitleScreen'
 import WorldMap from './components/WorldMap'
-import { quests } from './data/portfolio'
+import { quests, sideQuests } from './data/portfolio'
 import { GameProvider, useGame, type Route } from './lib/game'
 
 function Journey({ section }: { section?: string }) {
@@ -28,12 +29,13 @@ function Journey({ section }: { section?: string }) {
 }
 
 function keyFor(r: Route) {
-  return r.screen === 'quest' ? `quest-${r.id}` : r.screen
+  return r.screen === 'quest' ? `quest-${r.id}` : r.screen === 'side' ? `side-${r.id}` : r.screen
 }
 
 function titleFor(r: Route) {
   const base = 'LEVEL UP! A Prompting Adventure | The Journey of Jakov'
   if (r.screen === 'quest') return `Quest ${r.id}: ${quests.find((q) => q.id === r.id)?.shortTitle} | ${base}`
+  if (r.screen === 'side') return `Side Quest ${r.id}: ${sideQuests.find((q) => q.id === r.id)?.shortTitle} | ${base}`
   if (r.screen === 'summary') return `Level Up Summary | ${base}`
   if (r.screen === 'journey') return `Character and World Map | ${base}`
   return base
@@ -69,6 +71,7 @@ function Screens() {
             {route.screen === 'title' && <TitleScreen />}
             {route.screen === 'journey' && <Journey section={route.section} />}
             {route.screen === 'quest' && <QuestLog id={route.id} />}
+            {route.screen === 'side' && <SideQuestLog id={route.id} />}
             {route.screen === 'summary' && <FinalScreen />}
           </motion.div>
         </AnimatePresence>

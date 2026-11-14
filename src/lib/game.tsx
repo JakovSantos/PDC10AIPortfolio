@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { playSfx, setSoundEnabled } from './sound'
-import { quests } from '../data/portfolio'
+import { quests, sideQuests } from '../data/portfolio'
 
 /* ---------- safe localStorage helpers ---------- */
 function load<T>(key: string, fallback: T): T {
@@ -24,10 +24,15 @@ export type Route =
   | { screen: 'title' }
   | { screen: 'journey'; section?: string }
   | { screen: 'quest'; id: number }
+  | { screen: 'side'; id: number }
   | { screen: 'summary' }
 
 function parseHash(): Route {
   const h = window.location.hash.replace(/^#\/?/, '')
+  if (h.startsWith('side/')) {
+    const id = Number(h.split('/')[1])
+    if (sideQuests.some((q) => q.id === id)) return { screen: 'side', id }
+  }
   if (h.startsWith('quest/')) {
     const id = Number(h.split('/')[1])
     if (quests.some((q) => q.id === id)) return { screen: 'quest', id }
@@ -43,6 +48,8 @@ export function routeToHash(r: Route) {
       return '#/'
     case 'journey':
       return r.section ? `#/journey/${r.section}` : '#/journey'
+    case 'side':
+      return `#/side/${r.id}`
     case 'quest':
       return `#/quest/${r.id}`
     case 'summary':

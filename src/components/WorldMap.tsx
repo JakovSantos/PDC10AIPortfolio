@@ -5,7 +5,7 @@ import DialogBox from './DialogBox'
 import PixelCanvas from './PixelCanvas'
 import PixelIcon from './PixelIcon'
 import { Plaque } from './CharacterSheet'
-import { mapIntro, quests } from '../data/portfolio'
+import { mapIntro, quests, sideQuests } from '../data/portfolio'
 import { useGame } from '../lib/game'
 import { playSfx } from '../lib/sound'
 import { useMedia } from '../hooks/useMedia'
@@ -252,6 +252,40 @@ export default function WorldMap() {
           </li>
         ))}
       </ul>
+
+      {/* Bonus side quests: my own projects where I applied prompting */}
+      <div id="side" className="scroll-mt-24 pt-10">
+        <h3 className="frame f-plank drop mb-2 inline-block px-4 py-0.5 font-pixel text-2xl text-gold small-outline sm:text-3xl">
+          ✦ Bonus: Side Quests
+        </h3>
+        <p className="frame-sm f-paper mb-4 block px-3 py-2 text-sm">
+          My own projects outside class, where I used the same prompting skills. These are optional and do not change the Prompting Level.
+        </p>
+        <ul className="grid gap-4 sm:grid-cols-3" aria-label="Side quest list">
+          {sideQuests.map((sq) => (
+            <li key={sq.id}>
+              <button
+                type="button"
+                onClick={() => {
+                  playSfx('click')
+                  window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior })
+                  go({ screen: 'side', id: sq.id })
+                }}
+                className="frame-sm f-blue group flex h-full w-full flex-col items-start gap-2 px-3 py-3 text-left transition-transform duration-150 hover:-translate-y-1"
+              >
+                <span className="flex items-center gap-2">
+                  <span className="frame-sm f-gold p-0.5 transition-[filter] group-hover:[filter:drop-shadow(0_0_6px_rgba(255,236,150,1))]">
+                    <PixelIcon name={sq.icon} size={28} />
+                  </span>
+                  <span className="font-pixel text-base text-lanyard">Side Quest {sq.id}</span>
+                </span>
+                <span className="font-pixel text-xl leading-tight">{sq.shortTitle}</span>
+                <span className="text-xs">{sq.type}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   )
 }

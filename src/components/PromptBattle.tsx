@@ -47,7 +47,7 @@ function BeforePanel({ battle }: { battle: Battle }) {
   return (
     <div className="flex h-full flex-col">
       <p className="pixel-label mb-1 text-inksoft">Lv. 1 Prompt (before)</p>
-      <div className="prompt-box flex-1">{battle.before.text}</div>
+      <div className="prompt-box max-h-[560px] flex-1 overflow-y-auto" tabIndex={0}>{battle.before.text}</div>
       {battle.before.note && <p className="mt-2 text-sm text-inksoft">{battle.before.note}</p>}
     </div>
   )
@@ -57,7 +57,7 @@ function AfterPanel({ battle, highlight }: { battle: Battle; highlight: boolean 
   return (
     <div className="flex h-full flex-col">
       <p className="pixel-label mb-1 text-lanyard">Upgraded Prompt (after)</p>
-      <div className="prompt-box flex-1">
+      <div className="prompt-box max-h-[560px] flex-1 overflow-y-auto" tabIndex={0}>
         {battle.after.segments.map((s, i) =>
           s.tag && highlight ? (
             <mark

@@ -1,3 +1,4 @@
+import photoboothAfter from './prompts/photobooth-after.md?raw'
 /* =====================================================================
    LEVEL UP! A PROMPTING ADVENTURE: all editable portfolio content lives in this one file.
    Edit text here without touching any component.
@@ -21,6 +22,7 @@ export type Tag =
   | 'safety'
   | 'command'
   | 'privacy'
+  | 'testing'
   | 'missing'
 
 export const TAG_INFO: Record<Tag, { label: string; color: string }> = {
@@ -38,6 +40,7 @@ export const TAG_INFO: Record<Tag, { label: string; color: string }> = {
   safety: { label: 'Safety Rule', color: '#ffb3b3' },
   command: { label: 'Command', color: '#d4f7a8' },
   privacy: { label: 'Privacy', color: '#f7c8a8' },
+  testing: { label: 'Testing', color: '#c8f0d0' },
   missing: { label: 'Missing', color: '#eeeeee' },
 }
 
@@ -65,7 +68,7 @@ export interface Stat {
   value: string
 }
 
-export type QuestIcon = 'compass' | 'scroll' | 'magnifier' | 'blocks' | 'robot' | 'lock' | 'crown'
+export type QuestIcon = 'compass' | 'scroll' | 'magnifier' | 'blocks' | 'robot' | 'lock' | 'crown' | 'camera' | 'book' | 'gear'
 
 export interface Quest {
   id: number
@@ -2249,3 +2252,176 @@ export const reports: Record<number, QuestReport> = {
     ],
   },
 }
+
+/* =====================================================================
+   BONUS SIDE QUESTS: my own projects where I applied prompting.
+   These do not change the Prompting Level (that tracks the 7 class quests).
+   Prompts are kept exactly as I wrote them.
+   ===================================================================== */
+export interface SideQuest {
+  id: number
+  title: string
+  shortTitle: string
+  icon: QuestIcon
+  type: string
+  platforms: string[]
+  scene: { variant: 'day' | 'sunset' | 'night' | 'cave'; pose: 'idle' | 'happy' | 'curious' | 'thinking' | 'chin' | 'adventure' | 'victory'; line: string }
+  briefing: string[]
+  battle: PromptBattle
+  inputs?: { label: string; url: string; note?: string }[]
+  outputs: { label: string; url: string; note?: string }[]
+  xp: string[]
+}
+
+/** Split a long markdown prompt at its "## " sections and tag each section. */
+function sectioned(text: string, tags: Tag[]): Segment[] {
+  return text
+    .trim()
+    .split(/\n(?=## )/)
+    .map((t, i) => ({ text: (i ? '\n' : '') + t, tag: tags[Math.min(i, tags.length - 1)] }))
+}
+
+export const sideQuests: SideQuest[] = [
+  {
+    id: 1,
+    title: 'Side Quest: AUF CCS Honor Society Photobooth',
+    shortTitle: 'HonSoc Photobooth',
+    icon: 'camera',
+    type: 'Solo project (organization web app)',
+    platforms: ['AI coding assistant', 'React, TypeScript, Vite', 'Supabase Storage', 'Vercel'],
+    scene: { variant: 'sunset', pose: 'happy', line: 'Four photos, one frame, and a QR code that actually works.' },
+    briefing: [
+      'For the AUF CCS Honor Society, I wanted a photobooth web app that people could use at events: take four photos, get them composed into our official frame, and download the result on their own phone by scanning a QR code.',
+      'My first prompt was one line. The upgraded prompt reads like a full project brief: it sets the role and stack, treats the official logo and PNG frame as untouchable source files, spells out the four-photo capture flow, makes the QR code a hard requirement with real cloud storage, and ends with a 15-point testing checklist and a list of deliverables.',
+    ],
+    battle: {
+      before: { text: 'create a photobooth system for HonSoc.' },
+      after: {
+        segments: sectioned(photoboothAfter, [
+          'role',
+          'context',
+          'format',
+          'rule',
+          'constraint',
+          'steps',
+          'format',
+          'goal',
+          'format',
+          'rule',
+          'constraint',
+          'task',
+          'testing',
+          'goal',
+        ]),
+        note: 'Each numbered section is tagged by the technique it adds. Scroll inside the box to read the whole prompt.',
+      },
+    },
+    outputs: [{ label: 'Open the live photobooth', url: 'https://honsoc-photobooth.vercel.app/' }],
+    xp: [
+      'Name the assets that must not change, and say what to do if they are missing.',
+      'State what must never happen (a decorative QR code with no working destination).',
+      'Put the acceptance tests inside the prompt so "done" has a clear meaning.',
+    ],
+  },
+  {
+    id: 2,
+    title: 'Side Quest: Cyberthreat Management Reviewer',
+    shortTitle: 'Exam Reviewer',
+    icon: 'book',
+    type: 'Solo project (study reviewer)',
+    platforms: ['AI assistant', 'Google Docs'],
+    scene: { variant: 'day', pose: 'chin', line: 'A reviewer that misses nothing from the module.' },
+    briefing: [
+      'I needed a reviewer for my cyberthreat management exam. A one-line request tends to give a summary that simplifies terms and drops details, which is risky when the exam uses the exact wording.',
+      'The upgraded prompt uses a ROLE, TASK, CONTEXT, and FORMAT structure. It requires every key term, definition, example, list, and embedded question to appear, keeps the original terminology and numbering, cross-checks a reference link, follows a sample document\'s formatting down to the font and layout, and asks for a completeness check before the reviewer is sent as a Google Doc.',
+    ],
+    battle: {
+      before: { text: 'create a reviewer about cyberthreat management.' },
+      after: {
+        segments: [
+          { text: 'ROLE\nYou are a study assistant who helps a college student organize course material into a reviewer.', tag: 'role' },
+          {
+            text: '\nTASK\nOrganize the attached content into an easy-to-understand reviewer. Make sure no details are missed. Every key term, definition, example, list, and embedded question in the source must appear in the reviewer.',
+            tag: 'task',
+          },
+          {
+            text: `\nCONTEXT\nThe reviewer will be used to study for an exam, so accuracy matters more than simplification. Follow the exact wording of definitions and terminology as closely as possible, and only adjust for clarity where needed. Do not change or simplify the terminology itself. Use the original labels and header numbering from the source exactly as given. Do not label sections as "(definition)", "(activity)", or similar. Present the content naturally under its original numbering. Leave out any objectives section. If a reference link is provided, cross-check the reviewer against both the pasted text and the link, and include any key term found in either source.`,
+            tag: 'context',
+          },
+          {
+            text: '\nFORMAT\n- Follow the formatting of the attached sample document.\n- Font: Montserrat.\n- Layout: two columns.\n- Underline (black) all key terms and module titles.\n- Use extrabold for submodule titles.\n- Use bold for important details.\n- Use definitions, tables, and bullet points where they make the content easier to follow. Use tables for comparisons and bullet points for lists.\n- Do not use horizontal lines.\n- Include every embedded question with its exact answer choices, and mark the correct answer where indicated.',
+            tag: 'format',
+          },
+          { text: '\n- Before finalizing, confirm and state that the reviewer is complete against all provided sources.', tag: 'criteria' },
+          { text: '\n- Send the finished reviewer as a Google Doc.', tag: 'format' },
+        ],
+        note: 'The ROLE, TASK, CONTEXT, and FORMAT labels are exactly as I wrote them.',
+      },
+    },
+    inputs: [
+      {
+        label: 'Sample formatting document',
+        url: 'https://docs.google.com/document/d/1z_AFLJ22VZ6Q1tjJ4JVUsLl0vpBzCg25cfrCdhlZCKo/edit?usp=sharing',
+        note: 'The format the reviewer had to follow.',
+      },
+    ],
+    outputs: [{ label: 'Open the finished reviewer (Google Doc)', url: 'https://docs.google.com/document/d/1DTcDJsJYRV1JMboSbzlwgxvw4IDMzJptXjI5UNPMsZc/edit?usp=sharing' }],
+    xp: [
+      'Say what matters more: accuracy over simplification.',
+      'Give a sample to copy instead of describing the format from memory.',
+      'Ask for a completeness check before the final output.',
+    ],
+  },
+  {
+    id: 3,
+    title: 'Side Quest: ChatGPT Personalization',
+    shortTitle: 'ChatGPT Personalization',
+    icon: 'gear',
+    type: 'Solo project (custom instructions)',
+    platforms: ['ChatGPT (Personalization settings)'],
+    scene: { variant: 'night', pose: 'thinking', line: 'One prompt that shapes every chat after it.' },
+    briefing: [
+      'Instead of repeating the same preferences in every chat, I wrote ChatGPT custom instructions that apply to all my conversations. This is a different kind of prompt: it does not ask for one answer, it sets standing rules for how the AI should treat me and respond.',
+      'The "About Me" part gives context about my degree, goals, and how I use ChatGPT, and it also sets a memory boundary. The "How I\'d Like ChatGPT to Respond" part sets the answer structure, writing voice, formatting, citation style, and quality checks.',
+    ],
+    battle: {
+      before: {
+        text: '(No custom instructions. Default ChatGPT behavior, with my preferences repeated in each chat when I remembered to.)',
+        note: 'There was no earlier personalization prompt to compare against.',
+      },
+      after: {
+        segments: [
+          {
+            text: 'About Me\nI am a third-year Information Technology student majoring in Web and Mobile Technologies. I use ChatGPT for coursework, programming, debugging, technical learning, reviewer creation, research, and academic writing. My goals are to maintain my scholarship, build a strong portfolio, create production-quality software, and improve my AI skills.',
+            tag: 'context',
+          },
+          { text: ' Remember my degree, long-term goals, writing/coding preferences, and recurring projects.', tag: 'rule' },
+          { text: ' Do not remember temporary assignments, deadlines, or names from prompts or examples as my own.', tag: 'privacy' },
+          {
+            text: `\n\nHow I'd Like ChatGPT to Respond\nProvide a complete answer first, followed by implementation steps and a clear explanation. Be comprehensive without filler. Compare approaches when appropriate, explain trade-offs, and recommend the best option.`,
+            tag: 'format',
+          },
+          {
+            text: ' Write in natural, professional English that sounds like a university student. Preserve my voice, follow APA 7th when applicable, and avoid AI clichés, em dashes, and emojis.',
+            tag: 'constraint',
+          },
+          {
+            text: ' Use headings, numbered steps, tables for comparisons, concise summaries, and production-quality code with best practices and error handling.',
+            tag: 'format',
+          },
+          {
+            text: ' Verify facts, cite sources when appropriate, admit uncertainty, identify code issues, correct mistakes respectfully, and ask clarifying questions only when necessary.',
+            tag: 'criteria',
+          },
+        ],
+        note: 'My actual custom instructions, in the two fields ChatGPT provides.',
+      },
+    },
+    outputs: [],
+    xp: [
+      'Standing instructions save repeating the same preferences in every chat.',
+      'Tell the AI what not to remember, not only what to remember.',
+      'Quality rules (verify, admit uncertainty) belong in the prompt too.',
+    ],
+  },
+]
