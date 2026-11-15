@@ -2284,96 +2284,6 @@ function sectioned(text: string, tags: Tag[]): Segment[] {
 export const sideQuests: SideQuest[] = [
   {
     id: 1,
-    title: 'Side Quest: AUF CCS Honor Society Photobooth',
-    shortTitle: 'HonSoc Photobooth',
-    icon: 'camera',
-    type: 'Solo project (organization web app)',
-    platforms: ['AI coding assistant', 'React, TypeScript, Vite', 'Supabase Storage', 'Vercel'],
-    scene: { variant: 'sunset', pose: 'happy', line: 'Four photos, one frame, and a QR code that actually works.' },
-    briefing: [
-      'For the AUF CCS Honor Society, I wanted a photobooth web app that people could use at events: take four photos, get them composed into our official frame, and download the result on their own phone by scanning a QR code.',
-      'My first prompt was one line. The upgraded prompt reads like a full project brief: it sets the role and stack, treats the official logo and PNG frame as untouchable source files, spells out the four-photo capture flow, makes the QR code a hard requirement with real cloud storage, and ends with a 15-point testing checklist and a list of deliverables.',
-    ],
-    battle: {
-      before: { text: 'create a photobooth system for HonSoc.' },
-      after: {
-        segments: sectioned(photoboothAfter, [
-          'role',
-          'context',
-          'format',
-          'rule',
-          'constraint',
-          'steps',
-          'format',
-          'goal',
-          'format',
-          'rule',
-          'constraint',
-          'task',
-          'testing',
-          'goal',
-        ]),
-        note: 'Each numbered section is tagged by the technique it adds. Scroll inside the box to read the whole prompt.',
-      },
-    },
-    outputs: [{ label: 'Open the live photobooth', url: 'https://honsoc-photobooth.vercel.app/' }],
-    xp: [
-      'Name the assets that must not change, and say what to do if they are missing.',
-      'State what must never happen (a decorative QR code with no working destination).',
-      'Put the acceptance tests inside the prompt so "done" has a clear meaning.',
-    ],
-  },
-  {
-    id: 2,
-    title: 'Side Quest: Cyberthreat Management Reviewer',
-    shortTitle: 'Exam Reviewer',
-    icon: 'book',
-    type: 'Solo project (study reviewer)',
-    platforms: ['AI assistant', 'Google Docs'],
-    scene: { variant: 'day', pose: 'chin', line: 'A reviewer that misses nothing from the module.' },
-    briefing: [
-      'I needed a reviewer for my cyberthreat management exam. A one-line request tends to give a summary that simplifies terms and drops details, which is risky when the exam uses the exact wording.',
-      'The upgraded prompt uses a ROLE, TASK, CONTEXT, and FORMAT structure. It requires every key term, definition, example, list, and embedded question to appear, keeps the original terminology and numbering, cross-checks a reference link, follows a sample document\'s formatting down to the font and layout, and asks for a completeness check before the reviewer is sent as a Google Doc.',
-    ],
-    battle: {
-      before: { text: 'create a reviewer about cyberthreat management.' },
-      after: {
-        segments: [
-          { text: 'ROLE\nYou are a study assistant who helps a college student organize course material into a reviewer.', tag: 'role' },
-          {
-            text: '\nTASK\nOrganize the attached content into an easy-to-understand reviewer. Make sure no details are missed. Every key term, definition, example, list, and embedded question in the source must appear in the reviewer.',
-            tag: 'task',
-          },
-          {
-            text: `\nCONTEXT\nThe reviewer will be used to study for an exam, so accuracy matters more than simplification. Follow the exact wording of definitions and terminology as closely as possible, and only adjust for clarity where needed. Do not change or simplify the terminology itself. Use the original labels and header numbering from the source exactly as given. Do not label sections as "(definition)", "(activity)", or similar. Present the content naturally under its original numbering. Leave out any objectives section. If a reference link is provided, cross-check the reviewer against both the pasted text and the link, and include any key term found in either source.`,
-            tag: 'context',
-          },
-          {
-            text: '\nFORMAT\n- Follow the formatting of the attached sample document.\n- Font: Montserrat.\n- Layout: two columns.\n- Underline (black) all key terms and module titles.\n- Use extrabold for submodule titles.\n- Use bold for important details.\n- Use definitions, tables, and bullet points where they make the content easier to follow. Use tables for comparisons and bullet points for lists.\n- Do not use horizontal lines.\n- Include every embedded question with its exact answer choices, and mark the correct answer where indicated.',
-            tag: 'format',
-          },
-          { text: '\n- Before finalizing, confirm and state that the reviewer is complete against all provided sources.', tag: 'criteria' },
-          { text: '\n- Send the finished reviewer as a Google Doc.', tag: 'format' },
-        ],
-        note: 'The ROLE, TASK, CONTEXT, and FORMAT labels are exactly as I wrote them.',
-      },
-    },
-    inputs: [
-      {
-        label: 'Sample formatting document',
-        url: 'https://docs.google.com/document/d/1z_AFLJ22VZ6Q1tjJ4JVUsLl0vpBzCg25cfrCdhlZCKo/edit?usp=sharing',
-        note: 'The format the reviewer had to follow.',
-      },
-    ],
-    outputs: [{ label: 'Open the finished reviewer (Google Doc)', url: 'https://docs.google.com/document/d/1DTcDJsJYRV1JMboSbzlwgxvw4IDMzJptXjI5UNPMsZc/edit?usp=sharing' }],
-    xp: [
-      'Say what matters more: accuracy over simplification.',
-      'Give a sample to copy instead of describing the format from memory.',
-      'Ask for a completeness check before the final output.',
-    ],
-  },
-  {
-    id: 3,
     title: 'Side Quest: ChatGPT Personalization',
     shortTitle: 'ChatGPT Personalization',
     icon: 'gear',
@@ -2422,6 +2332,96 @@ export const sideQuests: SideQuest[] = [
       'Standing instructions save repeating the same preferences in every chat.',
       'Tell the AI what not to remember, not only what to remember.',
       'Quality rules (verify, admit uncertainty) belong in the prompt too.',
+    ],
+  },
+  {
+    id: 2,
+    title: 'Side Quest: AUF CCS Honor Society Photobooth',
+    shortTitle: 'HonSoc Photobooth',
+    icon: 'camera',
+    type: 'Solo project (organization web app)',
+    platforms: ['Antigravity', 'React, TypeScript, Vite', 'Supabase Storage', 'Vercel'],
+    scene: { variant: 'sunset', pose: 'happy', line: 'Four photos, one frame, and a QR code that actually works.' },
+    briefing: [
+      'For the AUF CCS Honor Society, I wanted a photobooth web app that people could use at events: take four photos, get them composed into our official frame, and download the result on their own phone by scanning a QR code.',
+      'My first prompt was one line. The upgraded prompt reads like a full project brief: it sets the role and stack, treats the official logo and PNG frame as untouchable source files, spells out the four-photo capture flow, makes the QR code a hard requirement with real cloud storage, and ends with a 15-point testing checklist and a list of deliverables.',
+    ],
+    battle: {
+      before: { text: 'create a photobooth system for HonSoc.' },
+      after: {
+        segments: sectioned(photoboothAfter, [
+          'role',
+          'context',
+          'format',
+          'rule',
+          'constraint',
+          'steps',
+          'format',
+          'goal',
+          'format',
+          'rule',
+          'constraint',
+          'task',
+          'testing',
+          'goal',
+        ]),
+        note: 'Each numbered section is tagged by the technique it adds. Scroll inside the box to read the whole prompt.',
+      },
+    },
+    outputs: [{ label: 'Open the live photobooth', url: 'https://honsoc-photobooth.vercel.app/' }],
+    xp: [
+      'Name the assets that must not change, and say what to do if they are missing.',
+      'State what must never happen (a decorative QR code with no working destination).',
+      'Put the acceptance tests inside the prompt so "done" has a clear meaning.',
+    ],
+  },
+  {
+    id: 3,
+    title: 'Side Quest: Cyberthreat Management Reviewer',
+    shortTitle: 'Exam Reviewer',
+    icon: 'book',
+    type: 'Solo project (study reviewer)',
+    platforms: ['Claude', 'Google Docs'],
+    scene: { variant: 'day', pose: 'chin', line: 'A reviewer that misses nothing from the module.' },
+    briefing: [
+      'I needed a reviewer for my cyberthreat management exam. A one-line request tends to give a summary that simplifies terms and drops details, which is risky when the exam uses the exact wording.',
+      'The upgraded prompt uses a ROLE, TASK, CONTEXT, and FORMAT structure. It requires every key term, definition, example, list, and embedded question to appear, keeps the original terminology and numbering, cross-checks a reference link, follows a sample document\'s formatting down to the font and layout, and asks for a completeness check before the reviewer is sent as a Google Doc.',
+    ],
+    battle: {
+      before: { text: 'create a reviewer about cyberthreat management.' },
+      after: {
+        segments: [
+          { text: 'ROLE\nYou are a study assistant who helps a college student organize course material into a reviewer.', tag: 'role' },
+          {
+            text: '\nTASK\nOrganize the attached content into an easy-to-understand reviewer. Make sure no details are missed. Every key term, definition, example, list, and embedded question in the source must appear in the reviewer.',
+            tag: 'task',
+          },
+          {
+            text: `\nCONTEXT\nThe reviewer will be used to study for an exam, so accuracy matters more than simplification. Follow the exact wording of definitions and terminology as closely as possible, and only adjust for clarity where needed. Do not change or simplify the terminology itself. Use the original labels and header numbering from the source exactly as given. Do not label sections as "(definition)", "(activity)", or similar. Present the content naturally under its original numbering. Leave out any objectives section. If a reference link is provided, cross-check the reviewer against both the pasted text and the link, and include any key term found in either source.`,
+            tag: 'context',
+          },
+          {
+            text: '\nFORMAT\n- Follow the formatting of the attached sample document.\n- Font: Montserrat.\n- Layout: two columns.\n- Underline (black) all key terms and module titles.\n- Use extrabold for submodule titles.\n- Use bold for important details.\n- Use definitions, tables, and bullet points where they make the content easier to follow. Use tables for comparisons and bullet points for lists.\n- Do not use horizontal lines.\n- Include every embedded question with its exact answer choices, and mark the correct answer where indicated.',
+            tag: 'format',
+          },
+          { text: '\n- Before finalizing, confirm and state that the reviewer is complete against all provided sources.', tag: 'criteria' },
+          { text: '\n- Send the finished reviewer as a Google Doc.', tag: 'format' },
+        ],
+        note: 'The ROLE, TASK, CONTEXT, and FORMAT labels are exactly as I wrote them.',
+      },
+    },
+    inputs: [
+      {
+        label: 'Sample formatting document',
+        url: 'https://docs.google.com/document/d/1z_AFLJ22VZ6Q1tjJ4JVUsLl0vpBzCg25cfrCdhlZCKo/edit?usp=sharing',
+        note: 'The format the reviewer had to follow.',
+      },
+    ],
+    outputs: [{ label: 'Open the finished reviewer (Google Doc)', url: 'https://docs.google.com/document/d/1DTcDJsJYRV1JMboSbzlwgxvw4IDMzJptXjI5UNPMsZc/edit?usp=sharing' }],
+    xp: [
+      'Say what matters more: accuracy over simplification.',
+      'Give a sample to copy instead of describing the format from memory.',
+      'Ask for a completeness check before the final output.',
     ],
   },
 ]
